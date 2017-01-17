@@ -3,32 +3,18 @@ const Schema = mongoose.Schema;
 
 var orderSchema = new Schema({
 	
-	user: {type: String, required: true, trim: true},
-	truck: {type: Schema.ObjectId, ref: 'Item', required: true},
-	item: [{
-		name: ,
-		price: ,
-		quantity:
-	}]
-	
-		firstName: {type: String, required: true, trim: true},
-		lastName: String,
-		venmo: String,
-		email: String,
-		phone: {type: String, required: true},
-		phoneProvider: {type: String, required: true},
-		purchases: [{
-			date: Date,
-			item: {
-				id: {type: Schema.ObjectId, ref: 'Item', required: true},
-				price: Number,
-				name: String,
-				quantity: Number
-			},
-			isPaid: Boolean,
-			isPickedUp: Boolean
-		}],
-		isAdmin: [String]
+	user: {type: Schema.ObjectId, ref: 'User', required: true, trim: true},
+	truck: {type: Schema.ObjectId, ref: 'Truck' required: true},
+	purchasedItems: [{
+		item: {
+			price: Number,
+			name: String,
+			quantity: Number
+		}
+	}],
+	isPaid: Boolean,
+	isComplete: Boolean,
+	datePlaced: Date
 	},
 	
 	{
@@ -39,7 +25,6 @@ var orderSchema = new Schema({
 		}
 	}
 );
-
 
 var Order = mongoose.model('Order', orderSchema);
 
