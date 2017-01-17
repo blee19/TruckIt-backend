@@ -28,7 +28,7 @@ var truckSchema = new Schema({
 	}
 );
 
-userSchema.pre('save', function (callback) {
+truckSchema.pre('save', function (callback) {
 	if (!this.email)
         return callback(new Error('Missing email'));
     if (!this.phone)
