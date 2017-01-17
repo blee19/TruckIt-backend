@@ -1,0 +1,19 @@
+{
+  "name": "truckit",
+  "version": "1.0.0",
+  "description": "CS50 Bootcamp Project",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npm install && node dorm-supplies-api.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blee19/TruckIt-backend.git"
+  },
+  "author": "Brandon Ivraj Catherine Ethan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/blee19/TruckIt-backend/issues"
+  },
+  "homepage": "https://github.com/blee19/TruckIt-backend#readme"
+}
