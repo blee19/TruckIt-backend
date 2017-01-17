@@ -1,19 +1,20 @@
 const User = require('../models/schemas/user');
+const Order = require('../models/schemas/order')
 
-exports.getAllItems = (req, res, next) => {
+exports.getMenuItems = (req, res, next) => {
     Item.find({}, (err, items) => {
         if (err) return next(err);
         res.json(items);
     });
 };
 
-exports.getItemById = (req, res, next) => {
-    Item.findById(req.params.id, (err, item) => {
-        if (err) return next(err);
-        if (!item) return res.status(404).send('No item with that ID');
-        res.json(item);
-    });
-};
+// exports.getItemById = (req, res, next) => {
+//     Item.findById(req.params.id, (err, item) => {
+//         if (err) return next(err);
+//         if (!item) return res.status(404).send('No item with that ID');
+//         res.json(item);
+//     });
+// };
 
 exports.createItem = (req, res, next) => {
     var newItem = new Item(req.body);
@@ -37,10 +38,26 @@ exports.deleteItem = (req, res, next) => {
     });
 };
 
-exports.completeOrder = (req, res, next) => {
-    Item.findByIdAndUpdate(req.params.id, {isComplete: true}, (err, doc) => {
+exports.getPendingOrders = (req, res, next) => {
+    Order.find({[{truck: req.body.companyName}, {complete: null}]}, (err, item) => {
         if (err) return next(err);
-        if (!doc) return res.status(404).send('No item with that ID');
+        if (!item) return res.status(404).send('No item with that ID');
+        res.json(item);
+    });
+};
+
+exports.markOrderComplete = (req, res, next) => {
+    Item.findByIdAndUpdate(req.params.id, {this.isComplete: true}, (err, doc) => {
+        if (err) return next(err);
+        if (!doc) return res.status(404).send('No order with that ID');
         res.sendStatus(200);
+    });
+};
+
+exports.getOrderHistory = (req, res, next) => {
+    Order.find({truck: req.body.}, (err, item) => {
+        if (err) return next(err);
+        if (!item) return res.status(404).send('No item with that ID');
+        res.json(item);
     });
 };

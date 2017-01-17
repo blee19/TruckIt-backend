@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 const config = require('./models/config');
 
 const users = require('./controllers/users');
-const items = require('./controllers/items');
+const admins = require('./controllers/admins');
 const auth = require('./controllers/auth');
 
 mongoose.Promise = global.Promise;
@@ -47,27 +47,44 @@ router.param('subId', (req, res, next, id) => {
 // ==================================================
 
 router.route('/users')
-	.get(auth.adminRequired, users.getAllUsers)
+	.get(auth.superAdminRequired, users.getAllUsers)
 	.post(users.createUser, auth.loginUser);
-router.route('/users/pending')
-	.get(auth.adminRequired, users.getUndeliveredAndUnpaidPurchases);
+// router.route('/users/pending')
+// 	.get(auth.adminRequired, users.getUndeliveredAndUnpaidPurchases);
 router.route('/users/:id')
 	.get(auth.validateToken, users.getUserById)
 	.put(auth.validateToken, users.updateUser)
 	.delete(auth.validateToken, users.deleteUser);
 router.route('/users/:id/pending')
 	.get(auth.adminRequired, users.getPendingByUserId);
-router.route('/users/:id/pending/:subId')
-	.post(auth.adminRequired, users.markPendingPaid)
-	.delete(auth.adminRequired, users.markPendingDelivered);
+router.route('/users/:id/cart')
+	.get(auth.adminRequired, users.getCart);
+	.post(auth.adminRequired, users.placeOrder);
+router.route('/users/:id/history')
+	.get(auth.adminRequired, users.getOrderHistory);
+
 
 router.route('/admins/:id')
-	.post(auth.adminRequired, users.makeAdmin)
-	.delete(auth.adminRequired, users.removeAdminPrivs);
+	.post(auth.superAdminRequired, users.makeAdmin)
+	.delete(auth.superAdminRequired, users.removeAdminPrivs);
 
-router.route('/items')
-	.get(items.getAllItems)
+router.route('/trucks')
+	.get(users.getActiveTrucks);
+
+router.route('/trucks/:id')
+	.get(admins.getMenuItems);
+router.route('/trucks/:id/pending')
+	.get(auth.adminRequired, admins.getPendingOrders);
+router.route('/trucks/:id/history')
+	.get(auth.adminRequired, admins.getOrderHistory);
+
+	
+
+
+router.route('/items/:truckId')
+	.get(auth.adminRequired,items.getMenuItems)
 	.post(auth.adminRequired, items.createItem);
+	.post(auth.adminRequired, items.UpdateItem);
 router.route('/items/:id')
 	.get(items.getItemById)
 	.post(auth.validateToken, items.purchaseItem)
