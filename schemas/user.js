@@ -4,23 +4,15 @@ const bcrypt = require('bcrypt-nodejs');
 
 var userSchema = new Schema({
 	firstName: {type: String, required: true, trim: true},
-	lastName: String,
-	venmo: String,
-	email: String,
-	phone: {type: String, required: true},
+	lastName: {type: String, trim: true},
+	hash: String,
+	venmo: {type: String, unique: true, required: true},
+	email: {type: String, trim: true},
+	phone: {type: String, required: true, unique: true, sparse: true},
 	phoneProvider: {type: String, required: true},
-	purchases: [{
-		date: Date,
-		item: {
-			id: {type: Schema.ObjectId, ref: 'Item', required: true},
-			price: Number,
-			name: String,
-			quantity: Number
-		},
-		isPaid: Boolean,
-		isPickedUp: Boolean
-	}],
-	isAdmin: [String]
+	isAdmin: [String],
+	isSuperAdmin: boolean,
+	token: String
 	},
 
 	{
