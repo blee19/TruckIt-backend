@@ -15,5 +15,13 @@
   "bugs": {
     "url": "https://github.com/blee19/TruckIt-backend/issues"
   },
-  "homepage": "https://github.com/blee19/TruckIt-backend#readme"
+  "homepage": "https://github.com/blee19/TruckIt-backend#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "mongoose": "^4.7.7",
+    "morgan": "^1.7.0",
+    "path": "^0.12.7",
+    "serve-favicon": "^2.3.2"
+  }
 }
