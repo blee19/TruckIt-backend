@@ -4,7 +4,7 @@
   "description": "CS50 Bootcamp Project",
   "main": "index.js",
   "scripts": {
-    "dev": "npm install && node dorm-supplies-api.js"
+    "dev": "npm install && node truck-backend-api.js"
   },
   "repository": {
     "type": "git",
