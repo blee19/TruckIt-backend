@@ -12,9 +12,8 @@ var orderSchema = new Schema({
 			quantity: Number
 		}
 	}],
-	isPaid: Boolean,
-	isComplete: Boolean,
-	datePlaced: Date
+	paid: Date,
+	completed: Date,
 	},
 	
 	{

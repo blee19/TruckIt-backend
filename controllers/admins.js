@@ -76,10 +76,10 @@ exports.deleteItem = (req, res, next) => {
 };
 
 exports.getPendingOrders = (req, res, next) => {
-    Order.find({[{truck: req.body.companyName}, {complete: null}]}, (err, item) => {
+    Order.find({truck: req.params.truckId, completed: null}, (err, orders) => {
         if (err) return next(err);
-        if (!item) return res.status(404).send('No item with that ID');
-        res.json(item);
+        if (!orders) return res.status(404).send('No pending orders for this truck');
+        res.json(orders);
     });
 };
 

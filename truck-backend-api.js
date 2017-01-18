@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 const config = require('./models/config');
 
 const users = require('./controllers/users');
+
 const admins = require('./controllers/admins');
 const auth = require('./controllers/auth');
 
@@ -47,8 +48,8 @@ router.param('subId', (req, res, next, id) => {
 // ==================================================
 
 router.route('/users')
-	.get(auth.superAdminRequired, users.getAllUsers)
-	.post(users.createUser, auth.loginUser);
+	.get(users.getAllUsers)
+	.post(users.createUser);
 // router.route('/users/pending')
 // 	.get(auth.adminRequired, users.getUndeliveredAndUnpaidPurchases);
 router.route('/users/:id')
@@ -73,12 +74,12 @@ router.route('/trucks')
 
 router.route('/trucks/:id')
 	.get(admins.getMenuItems);
-router.route('/trucks/pending/:truckId/')
-	.get(auth.adminRequired, admins.getPendingOrders);
-router.route('/trucks/:id/history')
+router.route('/trucks/history/:id')
 	.get(auth.adminRequired, admins.getOrderHistory);
-
-	
+router.route('/trucks/pending/:truckId')
+	.get(auth.adminRequired, admins.getPendingOrders);
+router.route('/trucks/orders/:orderId')
+	.put(auth.adminRequired, admins.markOrderComplete);
 
 
 router.route('/items/:truckId/:itemId')
@@ -86,14 +87,15 @@ router.route('/items/:truckId/:itemId')
 	.post(auth.adminRequired, admins.createItem);
 	.put(auth.adminRequired, admins.UpdateItem);
 	.delete(auth.adminRequired, admins.deleteItem);
+
 // router.route('/items/:id')
 // 	.get(items.getItemById)
 // 	.post(auth.validateToken, items.purchaseItem)
 // 	.put(auth.adminRequired, items.updateItemById)
 // 	.delete(auth.adminRequired, items.deleteItem);
-
-router.route('/auth/token')
-	.post(auth.loginUser);
+//
+// router.route('/auth/token')
+// 	.post(auth.loginUser);
 
 app.use('/', router);
 
