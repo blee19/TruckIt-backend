@@ -34,8 +34,6 @@ exports.loginUser = (req, res, next) => {
 	});
 };
 
-exports.adminRequired = (req, res, next) => validateToken(req, res, next);
-
 exports.superAdminRequired = (req, res, next) => validateToken(req, res, next, true, true);
 
 exports.adminRequired = (req, res, next) => validateToken(req, res, next, false, true);
