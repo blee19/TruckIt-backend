@@ -10,6 +10,7 @@ var truckSchema = new Schema({
 		phone: {type: String, unique: true},
 		phoneProvider: String,
 		isActive: Boolean,
+		isSoftDeleted: Boolean,
 		menu: [{
 			item: {
 				price: Number,

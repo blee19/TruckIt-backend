@@ -56,12 +56,16 @@ router.route('/users/:id')
 	.get(auth.validateToken, users.getUserById)
 	.put(auth.validateToken, users.updateUser)
 	.delete(auth.validateToken, users.deleteUser);
-router.route('/users/:id/pending')
+
+router.route('/users/pending/:id')
 	.get(auth.adminRequired, users.getPendingByUserId);
+router.route('/users/cart/:id')
+	.get(auth.adminRequired, users.getCart);
+
 router.route('/users/:id/cart')
 	.get(auth.adminRequired, users.getCart)
 	.post(auth.adminRequired, users.placeOrder);
-router.route('/users/:id/history')
+router.route('/users/history/:id')
 	.get(auth.adminRequired, users.getOrderHistory);
 
 

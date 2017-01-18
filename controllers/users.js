@@ -4,6 +4,8 @@ const validator = require('email-validator');
 const Truck = require('../models/schemas/truck');
 const Order = require('../models/schemas/order');
 
+var sessionStorage.cart = [];
+
 exports.getAllUsers = (req, res, next) => {
     User.find({}, (err, users) => {
         if (err) return next(err);
@@ -61,7 +63,7 @@ exports.createUser = (req, res, next) => {
     if (req.body.password) {
         req.body.hash = req.body.password;
     }
-    
+
     var newUser = new User(userData);
     newUser.save((err, user) => {
         if (err) {
@@ -77,7 +79,7 @@ exports.createUser = (req, res, next) => {
 exports.updateUser = (req, res, next) => {
     if (req.params.id !== req.user.id && !req.user.isSuperAdmin)
         return res.status(403).send("You don't have permission to do that");
-    User.findByIdAndUpdate(req.user.id, req.body, (err, doc) => {
+    User.findByIdAndUpdate(req.params.id, req.body, (err, doc) => {
         if (err) return next(err);
         if (!doc) return res.status(404).send('No user with that ID');
         res.sendStatus(200);
@@ -92,6 +94,14 @@ exports.deleteUser = (req, res, next) => {
         res.sendStatus(200);
     });
 };
+
+/*exports.makeAdmin = (req, res, next) => {
+    if (!req.user.isAdmin && !req.user.isSuperAdmin)
+        return res.status(403).send("You don't have permission to do that");
+    User.findByIdAndUpdate(req.user.id, req.body, (err, doc) => {
+
+    })
+}*/
 
 //TODO fix so that it gets a users pending orders from Orders DB
 exports.getPendingOrders = (req, res, next) => {
@@ -136,7 +146,6 @@ exports.editOrder = (req, res, next) => {
         if (!order) return res.status(404).send('No item with that ID');
     
         // allows users to see their cart of orders
-        sessionStorage.cart = [];
         sessionStorage.cart.push(req.body);
         
         res.status(200).json({
@@ -150,7 +159,7 @@ exports.getCart = (req, res, next) => {
     if (req.params.id !== req.user.id && !req.user.isSuperAdmin)
         return res.status(403).send("You don't have permission to do that");
     
-    if
+    res.status(200).send(sessionStorage.cart);
 };
 
 //TODO allows users to place orders
@@ -158,6 +167,3 @@ exports.getCart = (req, res, next) => {
 
 //TODO gets users purchase history
 // exports.getOrderHistory =
-
-//TODO
-    
