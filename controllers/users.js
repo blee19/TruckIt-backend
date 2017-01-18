@@ -93,13 +93,36 @@ exports.deleteUser = (req, res, next) => {
     });
 };
 
-/*exports.makeAdmin = (req, res, next) => {
-    if (!req.user.isAdmin && !req.user.isSuperAdmin)
+exports.makeAdmin = (req, res, next) => {
+    if (Truck.findById(req.user.isAdmin) === )
+
+    if ( req.user.isAdmin !== req.params.id && !req.user.isSuperAdmin)
         return res.status(403).send("You don't have permission to do that");
+    if ()
     User.findByIdAndUpdate(req.user.id, req.body, (err, doc) => {
 
     })
-}*/
+}
+
+exports.makeAdmin = (req, res, next) => {
+    if (!Truck.findById(req.user.isAdmin) && !req.user.isSuperAdmin)
+        return res.status(403).send("You don't have permission to do that");
+    User.findByIdAndUpdate(req.params.id, { isAdmin: req.body.isAdmin }, (err, user) => {
+        if (err) return next(err);
+        if (!user) return res.status(404).send('No user with that ID');
+        res.sendStatus(200);
+    });
+};
+
+exports.removeAdminPrivs = (req, res, next) => {
+    if (!Truck.findById(req.user.isAdmin) && !req.user.isSuperAdmin)
+        return res.status(403).send("You don't have permission to do that");
+    User.findByIdAndUpdate(req.params.id, { isAdmin: null }, (err, user) => {
+        if (err) return next(err);
+        if (!user) return res.status(404).send('No user with that ID');
+        res.sendStatus(200);
+    });
+};
 
 //TODO fix so that it gets a users pending orders from Orders DB
 exports.getPendingOrders = (req, res, next) => {
