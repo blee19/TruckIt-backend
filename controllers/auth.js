@@ -23,6 +23,7 @@ exports.loginUser = (req, res, next) => {
 			jwt_parameters.forEach((s) => payload[s] = user[s]);
 			if (user.firstName) payload.firstName = user.firstName;
 			if (user.lastName) payload.lastName = user.lastName;
+			if (user.isSuperAdmin) payload.isSuperAdmin = user.isSuperAdmin;
 
 			var token = jwt.encode(payload, config.secret);
 			user.token = token;
@@ -36,12 +37,12 @@ exports.loginUser = (req, res, next) => {
 
 exports.validateToken = (req, res, next) => validateToken(req, res, next);
 
-exports.superAdminRequired = (req, res, next) => validateToken(req, res, next, true, true);
+exports.superAdminRequired = (req, res, next) => validateToken(req, res, next, true, false);
 
 exports.adminRequired = (req, res, next) => validateToken(req, res, next, false, true);
 
 function validateToken(req, res, next, isSuperAdminRequired, isAdminRequired) {
-	var token = req.query.token || req.body.token || req.headers['x-access-token'];
+		var token = req.query.token || req.body.token || req.headers['x-access-token'];
 
 	if (!token) {
 		if (isSuperAdminRequired) return res.status(403).send('Super Admin token required');
@@ -52,13 +53,14 @@ function validateToken(req, res, next, isSuperAdminRequired, isAdminRequired) {
 
 	try {
 		var decoded = jwt.decode(token, config.secret);
+		console.log(decoded);
 	} catch (err) {
 		return res.status(403).send('Failed to authenticate token');
 	}
 
 	if (isSuperAdminRequired && !decoded.isSuperAdmin)
 		return res.status(403).send('Super Admin privileges required');
-	
+
 	if (isAdminRequired && !decoded.isAdmin)
 		return res.status(403).send('Admin privileges required');
 
