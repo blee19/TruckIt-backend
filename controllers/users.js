@@ -95,13 +95,36 @@ exports.deleteUser = (req, res, next) => {
     });
 };
 
-/*exports.makeAdmin = (req, res, next) => {
-    if (!req.user.isAdmin && !req.user.isSuperAdmin)
+exports.makeAdmin = (req, res, next) => {
+    if (Truck.findById(req.user.isAdmin) === )
+
+    if ( req.user.isAdmin !== req.params.id && !req.user.isSuperAdmin)
         return res.status(403).send("You don't have permission to do that");
+    if ()
     User.findByIdAndUpdate(req.user.id, req.body, (err, doc) => {
 
     })
-}*/
+}
+
+exports.makeAdmin = (req, res, next) => {
+    if (!Truck.findById(req.user.isAdmin) && !req.user.isSuperAdmin)
+        return res.status(403).send("You don't have permission to do that");
+    User.findByIdAndUpdate(req.params.id, { isAdmin: req.body.isAdmin }, (err, user) => {
+        if (err) return next(err);
+        if (!user) return res.status(404).send('No user with that ID');
+        res.sendStatus(200);
+    });
+};
+
+exports.removeAdminPrivs = (req, res, next) => {
+    if (!Truck.findById(req.user.isAdmin) && !req.user.isSuperAdmin)
+        return res.status(403).send("You don't have permission to do that");
+    User.findByIdAndUpdate(req.params.id, { isAdmin: null }, (err, user) => {
+        if (err) return next(err);
+        if (!user) return res.status(404).send('No user with that ID');
+        res.sendStatus(200);
+    });
+};
 
 //TODO fix so that it gets a users pending orders from Orders DB
 exports.getPendingOrders = (req, res, next) => {
@@ -163,7 +186,21 @@ exports.getCart = (req, res, next) => {
 };
 
 //TODO allows users to place orders
-// exports.placeOrder =
+exports.placeOrder = (req,res, next) => {
+
+};
 
 //TODO gets users purchase history
-// exports.getOrderHistory =
+exports.getOrderHistory = (req, res, next) => {
+
+};
+
+//TODO make a function that creats an admin. should be the exact same as the one that makes users except also adds an admin field.
+exports.makeAdmin = (req,res,next) => {
+
+};
+
+//TODO make a fucntion that updaetes the admin value for a specific user.
+exports.removeAdminPrivs = (req, res, next) => {
+
+};
