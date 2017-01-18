@@ -9,6 +9,10 @@ module.exports = {
 	// for first admin
 	superAdminEmail: 'brandonlee@college.harvard.edu',
 	superAdminPassword: 'brandon',
+	superAdminPhoneProvider: 'AT&T',
+	superAdminPhone: '7203831855',
+	superAdminVenmo: '@blee19',
+	superAdminFirstName: 'Brandon',
 	
 	// for sending emails
 	// TODO change this email
