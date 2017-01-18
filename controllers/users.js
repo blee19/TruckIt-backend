@@ -6,8 +6,9 @@ exports.getAllUsers = (req, res, next) => {
     User.find({}, (err, users) => {
         if (err) return next(err);
         res.json(users);
-    })
-}
+    });
+};
+
 exports.getUserById = (req, res, next) => {
     if (req.params.id !== req.user.id && !req.user.isSuperAdmin)
         return res.status(403).send("You don't have permission to do that");
@@ -55,7 +56,7 @@ exports.createUser = (req, res, next) => {
             userData.email = req.body.email;
     }
 
-    if (req.body.password) 
+    if (req.body.password)
         req.body.hash = req.body.password;
 
     var newUser = new User(userData);
@@ -116,17 +117,17 @@ exports.getPendingOrders = (req, res, next) => {
     .catch((err) => next(err));
 };
 
-//TODO get a list of active trucks
-exports.getActiveTrucks =
-
-//TODO adds item to user's current order (add to sessionStorage).
-exports.editOrder =
-
-//TODO have a way for a user to check what's in their cart
-exports.getCart = 
-
-//TODO allows users to place orders
-exports.placeOrder =
-
-//TODO gets users purchase history
-exports.getOrderHistory =
+// //TODO get a list of active trucks
+// exports.getActiveTrucks =
+//
+// //TODO adds item to user's current order (add to sessionStorage).
+// exports.editOrder =
+//
+// //TODO have a way for a user to check what's in their cart
+// exports.getCart =
+//
+// //TODO allows users to place orders
+// exports.placeOrder =
+//
+// //TODO gets users purchase history
+// exports.getOrderHistory =
