@@ -36,13 +36,16 @@ exports.loginUser = (req, res, next) => {
 
 exports.validateToken = (req, res, next) => validateToken(req, res, next);
 
-exports.superAdminRequired = (req, res, next) => validateToken(req, res, next, true);
+exports.superAdminRequired = (req, res, next) => validateToken(req, res, next, true, true);
 
-function validateToken(req, res, next, isSuperAdminRequired) {
+exports.adminRequired = (req, res, next) => validateToken(req, res, next, false, true);
+
+function validateToken(req, res, next, isSuperAdminRequired, isAdminRequired) {
 	var token = req.query.token || req.body.token || req.headers['x-access-token'];
 
 	if (!token) {
 		if (isSuperAdminRequired) return res.status(403).send('Super Admin token required');
+		if (isAdminRequired) return res.status(403).send('Admin token required');
 		req.user = false;
 		return next();
 	}
@@ -55,6 +58,9 @@ function validateToken(req, res, next, isSuperAdminRequired) {
 
 	if (isSuperAdminRequired && !decoded.isSuperAdmin)
 		return res.status(403).send('Super Admin privileges required');
+	
+	if (isAdminRequired && !decoded.isAdmin)
+		return res.status(403).send('Admin privileges required');
 
 	User.findById(decoded.id, (err, user) => {
 		if (err) return next(err);
