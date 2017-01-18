@@ -93,6 +93,14 @@ exports.deleteUser = (req, res, next) => {
     });
 };
 
+/*exports.makeAdmin = (req, res, next) => {
+    if (!req.user.isAdmin && !req.user.isSuperAdmin)
+        return res.status(403).send("You don't have permission to do that");
+    User.findByIdAndUpdate(req.user.id, req.body, (err, doc) => {
+
+    })
+}*/
+
 //TODO fix so that it gets a users pending orders from Orders DB
 exports.getPendingOrders = (req, res, next) => {
     User.aggregate([
