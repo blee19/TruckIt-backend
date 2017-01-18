@@ -6,7 +6,7 @@ const validator = require('email-validator');
 var userSchema = new Schema({
 	firstName: {type: String, required: true, trim: true},
 	lastName: {type: String, trim: true},
-	hash: {type: String, required: true},
+	password: {type: String, required: true},
 	venmo: {type: String, unique: true, required: true},
 	email: {type: String, required: true, trim: true, unique: true},
 	phone: {type: String, required: true, unique: true, sparse: true},
