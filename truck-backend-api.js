@@ -8,7 +8,8 @@ const bodyParser = require('body-parser');
 const config = require('./models/config');
 
 const users = require('./controllers/users');
-// const items = require('./controllers/items');
+
+const admins = require('./controllers/admins');
 const auth = require('./controllers/auth');
 
 mongoose.Promise = global.Promise;
@@ -68,6 +69,7 @@ router.route('/users')
 // router.route('/items')
 // 	.get(items.getAllItems)
 // 	.post(auth.adminRequired, items.createItem);
+
 // router.route('/items/:id')
 // 	.get(items.getItemById)
 // 	.post(auth.validateToken, items.purchaseItem)
