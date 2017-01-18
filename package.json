@@ -6,7 +6,6 @@
   "scripts": {
     "build": "npm install",
     "dev": "echo \"starting new server...\" && mongod -f models/mongodb/mongod.conf & echo $! > .mongo_pid && node truck-backend-api.js"
-
   },
   "repository": {
     "type": "git",

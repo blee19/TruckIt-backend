@@ -31,7 +31,7 @@ userSchema.pre('save', function (callback) {
     if (!this.password)
         return callback(new Error('Missing password'));
     if (this.isModified('password'))
-        this.password = bcrypt.passwordSync(this.password);
+        this.password = bcrypt.hashSync(this.password);
 
     if (!this.phone)
         return callback(new Error('Missing phone'));
@@ -66,6 +66,7 @@ userSchema.methods.comparePassword = function(pw, callback) {
         callback(null, isMatch);
     });
 };
+
 userSchema.methods.comparePasswordSync = function(pw) {
     return bcrypt.compareSync(pw, this.password);
 };

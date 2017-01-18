@@ -30,7 +30,7 @@ User.find({email: config.superAdminEmail}, (err, superAdmins) => {
 	var newSuperAdmin = User({
 		firstName: config.superAdminfirstName,
 		email: config.superAdminEmail,
-		hash: config.superAdminPassword,
+		password: config.superAdminPassword,
 		venmo: config.superAdminVenmo,
 		phone: config.superAdminPhone,
 		phoneProvider: config.superAdminPhoneProvider,
