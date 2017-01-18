@@ -77,7 +77,7 @@ exports.createUser = (req, res, next) => {
 exports.updateUser = (req, res, next) => {
     if (req.params.id !== req.user.id && !req.user.isSuperAdmin)
         return res.status(403).send("You don't have permission to do that");
-    User.findByIdAndUpdate(req.user.id, req.body, (err, doc) => {
+    User.findByIdAndUpdate(req.params.id, req.body, (err, doc) => {
         if (err) return next(err);
         if (!doc) return res.status(404).send('No user with that ID');
         res.sendStatus(200);
