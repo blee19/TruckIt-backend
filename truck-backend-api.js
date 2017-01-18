@@ -61,7 +61,7 @@ router.route('/users/pending/:id')
 	.get(auth.adminRequired, users.getPendingOrders);
 
 router.route('/users/cart/:id')
-	.get(auth.adminRequired, users.getCart)
+//	.get(auth.adminRequired, users.getCart)
 	.post(auth.adminRequired, users.placeOrder);
 router.route('/users/history/:id')
 	.get(auth.adminRequired, users.getOrderHistory);

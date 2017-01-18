@@ -4,7 +4,7 @@ const validator = require('email-validator');
 const Truck = require('../models/schemas/truck');
 const Order = require('../models/schemas/order');
 
-var sessionStorage.cart = [];
+// var sessionStorage.cart = [];
 
 exports.getAllUsers = (req, res, next) => {
     User.find({}, (err, users) => {
@@ -96,17 +96,6 @@ exports.deleteUser = (req, res, next) => {
 };
 
 exports.makeAdmin = (req, res, next) => {
-    if (Truck.findById(req.user.isAdmin) === )
-
-    if ( req.user.isAdmin !== req.params.id && !req.user.isSuperAdmin)
-        return res.status(403).send("You don't have permission to do that");
-    if ()
-    User.findByIdAndUpdate(req.user.id, req.body, (err, doc) => {
-
-    })
-}
-
-exports.makeAdmin = (req, res, next) => {
     if (!Truck.findById(req.user.isAdmin) && !req.user.isSuperAdmin)
         return res.status(403).send("You don't have permission to do that");
     User.findByIdAndUpdate(req.params.id, { isAdmin: req.body.isAdmin }, (err, user) => {
@@ -167,10 +156,10 @@ exports.editOrder = (req, res, next) => {
     Order.findByIdAndUpdate(req.params.id, req.body, (err, order) => {
         if (err) return next(err);
         if (!order) return res.status(404).send('No item with that ID');
-    
+
         // allows users to see their cart of orders
         sessionStorage.cart.push(req.body);
-        
+
         res.status(200).json({
             message: 'We updated your order'
         });
@@ -187,9 +176,9 @@ exports.editOrder = (req, res, next) => {
 
 //TODO allows users to place orders
 exports.placeOrder = (req,res, next) => {
-    
+
     if (!req.user.id) return res.status(403).send('Account required');
-    
+
     var quantity = req.body.quantity || 1;
     Promise.all([
         User.findById(req.user.id).exec(),
@@ -199,13 +188,13 @@ exports.placeOrder = (req,res, next) => {
         var order = results[1];
         if (!order) return res.status(404).send('No order with that ID');
         if (!user) return res.status(401).send('Token user ID invalid');
-        
+
         if (typeof item.inventory === 'number' && item.inventory < quantity) {
             var err = new Error('Insufficient inventory');
             err.status = 400;
             throw err;
         }
-        
+
         // add purchase to user account
         user.purchases.push({
             name: item.name,
@@ -225,7 +214,7 @@ exports.placeOrder = (req,res, next) => {
                 text: `Thank you for purchasing ${quantity} orders of ${item.name}. Please venmo $${quantity * item.price} to ${config.venmoAccount}.`
             };
             transporter.sendMail(mailConfig);
-            
+
             if (typeof item.inventory !== 'number') return;
             item.inventory -= quantity;
             // TODO send email for low inventory
@@ -234,7 +223,7 @@ exports.placeOrder = (req,res, next) => {
     }).then(() => {
         res.sendStatus(200)
     }).catch((err) => next(err));
-    
+
 };
 
 //TODO gets users purchase history
