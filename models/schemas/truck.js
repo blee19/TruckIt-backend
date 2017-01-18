@@ -9,6 +9,7 @@ var truckSchema = new Schema({
 		email: {type: String, required: true, trim: true, unique: true},
 		phone: {type: String, unique: true},
 		phoneProvider: String,
+		isActive: Boolean,
 		menu: [{
 			item: {
 				price: Number,
