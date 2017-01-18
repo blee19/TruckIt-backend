@@ -122,7 +122,7 @@ exports.getPendingOrders = (req, res, next) => {
 
 //TODO get a list of active trucks
 exports.getActiveTrucks = (req, res, next) => {
-    Truck.find({}, (err, trucks) => {
+    Truck.find({ isActive: true }, (err, trucks) => {
         if (err) return next(err);
         res.json(trucks);
     });
@@ -130,10 +130,20 @@ exports.getActiveTrucks = (req, res, next) => {
 
 
 //TODO adds item to user's current order (add to sessionStorage).
-// exports.editOrder =
+exports.editOrder = (req, res, next) => {
+    Order.findByIdAndUpdate(req.params.id, req.body, (err, order) => {
+        if (err) return next(err);
+        if (!order) return res.status(404).send('No item with that ID');
+        res.Status(200).json({
+            message: 'We updated your order'
+        });
+    });
+};
 
 //TODO have a way for a user to check what's in their cart
-// exports.getCart =
+exports.getCart = (req, res, next) => {
+    
+};
 
 //TODO allows users to place orders
 // exports.placeOrder =
