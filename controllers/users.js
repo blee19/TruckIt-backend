@@ -61,7 +61,7 @@ exports.createUser = (req, res, next) => {
     if (req.body.password) {
         req.body.hash = req.body.password;
     }
-    
+
     var newUser = new User(userData);
     newUser.save((err, user) => {
         if (err) {
@@ -92,6 +92,14 @@ exports.deleteUser = (req, res, next) => {
         res.sendStatus(200);
     });
 };
+
+/*exports.makeAdmin = (req, res, next) => {
+    if (!req.user.isAdmin && !req.user.isSuperAdmin)
+        return res.status(403).send("You don't have permission to do that");
+    User.findByIdAndUpdate(req.user.id, req.body, (err, doc) => {
+
+    })
+}*/
 
 //TODO fix so that it gets a users pending orders from Orders DB
 exports.getPendingOrders = (req, res, next) => {
@@ -142,7 +150,7 @@ exports.editOrder = (req, res, next) => {
 
 //TODO have a way for a user to check what's in their cart
 exports.getCart = (req, res, next) => {
-    
+
 };
 
 //TODO allows users to place orders
@@ -150,6 +158,3 @@ exports.getCart = (req, res, next) => {
 
 //TODO gets users purchase history
 // exports.getOrderHistory =
-
-//TODO
-    

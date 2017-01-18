@@ -56,9 +56,11 @@ router.route('/users/:id')
 	.get(auth.validateToken, users.getUserById)
 	.put(auth.validateToken, users.updateUser)
 	.delete(auth.validateToken, users.deleteUser);
+
 router.route('/users/pending/:id')
 	.get(auth.adminRequired, users.getPendingByUserId);
-router.route('/users/:id/cart')
+
+router.route('/users/cart/:id')
 	.get(auth.adminRequired, users.getCart)
 	.post(auth.adminRequired, users.placeOrder);
 router.route('/users/history/:id')
