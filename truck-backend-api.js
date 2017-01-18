@@ -47,35 +47,35 @@ router.param('subId', (req, res, next, id) => {
 // ==================================================
 
 router.route('/users')
-	.get(auth.adminRequired, users.getAllUsers)
-	.post(users.createUser, auth.loginUser);
-router.route('/users/pending')
-	.get(auth.adminRequired, users.getUndeliveredAndUnpaidPurchases);
-router.route('/users/:id')
-	.get(auth.validateToken, users.getUserById)
-	.put(auth.validateToken, users.updateUser)
-	.delete(auth.validateToken, users.deleteUser);
-router.route('/users/:id/pending')
-	.get(auth.adminRequired, users.getPendingByUserId);
-router.route('/users/:id/pending/:subId')
-	.post(auth.adminRequired, users.markPendingPaid)
-	.delete(auth.adminRequired, users.markPendingDelivered);
+	.get(users.getAllUsers)
+	.post(users.createUser);
+// router.route('/users/pending')
+// 	.get(auth.adminRequired, users.getUndeliveredAndUnpaidPurchases);
+// router.route('/users/:id')
+// 	.get(auth.validateToken, users.getUserById)
+// 	.put(auth.validateToken, users.updateUser)
+// 	.delete(auth.validateToken, users.deleteUser);
+// router.route('/users/:id/pending')
+// 	.get(auth.adminRequired, users.getPendingByUserId);
+// router.route('/users/:id/pending/:subId')
+// 	.post(auth.adminRequired, users.markPendingPaid)
+// 	.delete(auth.adminRequired, users.markPendingDelivered);
 
-router.route('/admins/:id')
-	.post(auth.adminRequired, users.makeAdmin)
-	.delete(auth.adminRequired, users.removeAdminPrivs);
-
-router.route('/items')
-	.get(items.getAllItems)
-	.post(auth.adminRequired, items.createItem);
-router.route('/items/:id')
-	.get(items.getItemById)
-	.post(auth.validateToken, items.purchaseItem)
-	.put(auth.adminRequired, items.updateItemById)
-	.delete(auth.adminRequired, items.deleteItem);
-
-router.route('/auth/token')
-	.post(auth.loginUser);
+// router.route('/admins/:id')
+// 	.post(auth.adminRequired, users.makeAdmin)
+// 	.delete(auth.adminRequired, users.removeAdminPrivs);
+//
+// router.route('/items')
+// 	.get(items.getAllItems)
+// 	.post(auth.adminRequired, items.createItem);
+// router.route('/items/:id')
+// 	.get(items.getItemById)
+// 	.post(auth.validateToken, items.purchaseItem)
+// 	.put(auth.adminRequired, items.updateItemById)
+// 	.delete(auth.adminRequired, items.deleteItem);
+//
+// router.route('/auth/token')
+// 	.post(auth.loginUser);
 
 app.use('/', router);
 
