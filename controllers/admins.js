@@ -1,6 +1,6 @@
 const User = require('../models/schemas/user');
 const Order = require('../models/schemas/order');
-const Truck = require('/..../models/schemas/truck');
+const Truck = require('../models/schemas/truck');
 
 exports.getMenuItems = (req, res, next) => {
     Truck.findById(req.params.truckId, (err, truck) => {

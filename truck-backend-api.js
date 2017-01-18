@@ -58,8 +58,13 @@ router.route('/users/:id')
 	.delete(auth.validateToken, users.deleteUser);
 router.route('/users/pending/:id')
 	.get(auth.adminRequired, users.getPendingByUserId);
+<<<<<<< HEAD
 router.route('/users/cart/:id')
 	.get(auth.adminRequired, users.getCart);
+=======
+router.route('/users/:id/cart')
+	.get(auth.adminRequired, users.getCart)
+>>>>>>> 0bf7185cf295de94707cb3e8cb2bf6f4dfe4c623
 	.post(auth.adminRequired, users.placeOrder);
 router.route('/users/history/:id')
 	.get(auth.adminRequired, users.getOrderHistory);
@@ -84,8 +89,8 @@ router.route('/trucks/orders/:orderId')
 
 router.route('/items/:truckId/:itemId')
 	.get(auth.adminRequired,admins.getMenuItem)
-	.post(auth.adminRequired, admins.createItem);
-	.put(auth.adminRequired, admins.UpdateItem);
+	.post(auth.adminRequired, admins.createItem)
+	.put(auth.adminRequired, admins.UpdateItem)
 	.delete(auth.adminRequired, admins.deleteItem);
 
 // router.route('/items/:id')
