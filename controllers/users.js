@@ -30,17 +30,22 @@ exports.createUser = (req, res, next) => {
     if (req.body.firstName && typeof req.body.firstName === 'string') {
         userData.firstName = req.body.firstName;
     } else {res.status(400).send('No first name');}
+    if (req.body.email && typeof req.body.email === 'string') {
+        userData.email = req.body.email;
+    } else {res.status(400).send('No email');}
+    if (req.body.password && typeof req.body.password === 'string') {
+        userData.password = req.body.password;
+    } else {res.status(400).send('No password');}
+    if (req.body.venmo && typeof req.body.venmo === 'string') {
+        userData.venmo = req.body.venmo;
+    } else {res.status(400).send('No venmo');}
     if (req.body.lastName && typeof req.body.lastName === 'string') {
         userData.lastName = req.body.lastName;
     }
-
     if (typeof req.body.phone !== 'string')
         return res.status(400).send('No phone');
     if (typeof req.body.phoneProvider !== 'string')
         return res.status(400).send('No phoneProvider');
-
-
-
 
     if (req.body.phoneProvider === 'other') {
         if (typeof req.body['other-provider'] !== 'string')
@@ -66,15 +71,12 @@ exports.createUser = (req, res, next) => {
             userData.email = req.body.email;
     }
 
-    if (req.body.password) {
-        req.body.hash = req.body.password;
-    }
-
     var newUser = new User(userData);
     newUser.save((err, user) => {
         if (err) {
+            console.log(err);
             if (err.code === 11000)
-                return res.status(400).send('Email or phone number already registered');
+                return res.status(400).send('Email, phone, or venmo account number already registered');
             return next(err);
         }
         return res.sendStatus(200);
