@@ -50,7 +50,7 @@ exports.createItem = (req, res, next) => {
     };
 
 
-exports.updateItemById = (req, res, next) => {
+exports.updateItem = (req, res, next) => {
         Truck.findById(req.params.TruckId, (err, truck) => {
             if (err) return next(err);
             if (!truck) return res.status(404).send('No truck with that ID');
