@@ -11,7 +11,7 @@ exports.getMenuItems = (req, res, next) => {
             if (!items) return res.status(404).send('No menu items under this truck');
             res.json(items);
         })
-           
+
     });
 };
 
@@ -24,7 +24,7 @@ exports.getMenuItem = (req, res, next) => {
             if (!item) return res.status(404).send('No menu item with that ID');
             res.json(item);
         });
-           
+
     });
 };
 
@@ -45,10 +45,9 @@ exports.createItem = (req, res, next) => {
                 if (err) return handleError(err)
                 console.log('Menu item added!');
             });
-
         });
-               
-    });
+
+    };
 
 
 exports.updateItemById = (req, res, next) => {
@@ -76,7 +75,7 @@ exports.deleteItem = (req, res, next) => {
 };
 
 exports.getPendingOrders = (req, res, next) => {
-    Order.find({[{truck: req.body.companyName}, {complete: null}]}, (err, item) => {
+    Order.find({truck: req.body.companyName, complete: null}, (err, item) => {
         if (err) return next(err);
         if (!item) return res.status(404).send('No item with that ID');
         res.json(item);
@@ -92,7 +91,7 @@ exports.markOrderComplete = (req, res, next) => {
 };
 
 exports.getOrderHistory = (req, res, next) => {
-    Order.find({truck: req.body.}, (err, item) => {
+    Order.find({truck: req.body.truck}, (err, item) => {
         if (err) return next(err);
         if (!item) return res.status(404).send('No item with that ID');
         res.json(item);

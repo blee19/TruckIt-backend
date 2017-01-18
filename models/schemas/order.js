@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 var orderSchema = new Schema({
-	
-	user: {type: Schema.ObjectId, ref: 'User', required: true, trim: true},
-	truck: {type: Schema.ObjectId, ref: 'Truck' required: true},
+
+	user: {type: String, required: true, trim: true},
+	truck: {type: String, required: true},
 	purchasedItems: [{
 		item: {
 			price: Number,
@@ -16,7 +16,7 @@ var orderSchema = new Schema({
 	isComplete: Boolean,
 	datePlaced: Date
 	},
-	
+
 	{
 		toObject: {getters: true},
 		timestamps: {
