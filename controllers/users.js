@@ -61,7 +61,7 @@ exports.createUser = (req, res, next) => {
     if (req.body.password) {
         req.body.hash = req.body.password;
     }
-    
+
     var newUser = new User(userData);
     newUser.save((err, user) => {
         if (err) {
@@ -77,7 +77,7 @@ exports.createUser = (req, res, next) => {
 exports.updateUser = (req, res, next) => {
     if (req.params.id !== req.user.id && !req.user.isSuperAdmin)
         return res.status(403).send("You don't have permission to do that");
-    User.findByIdAndUpdate(req.user.id, req.body, (err, doc) => {
+    User.findByIdAndUpdate(req.params.id, req.body, (err, doc) => {
         if (err) return next(err);
         if (!doc) return res.status(404).send('No user with that ID');
         res.sendStatus(200);
@@ -130,7 +130,7 @@ exports.getPendingOrders = (req, res, next) => {
 
 //TODO get a list of active trucks
 exports.getActiveTrucks = (req, res, next) => {
-    Truck.find({}, (err, trucks) => {
+    Truck.find({ isActive: true }, (err, trucks) => {
         if (err) return next(err);
         res.json(trucks);
     });
@@ -138,10 +138,20 @@ exports.getActiveTrucks = (req, res, next) => {
 
 
 //TODO adds item to user's current order (add to sessionStorage).
-// exports.editOrder =
+exports.editOrder = (req, res, next) => {
+    Order.findByIdAndUpdate(req.params.id, req.body, (err, order) => {
+        if (err) return next(err);
+        if (!order) return res.status(404).send('No item with that ID');
+        res.Status(200).json({
+            message: 'We updated your order'
+        });
+    });
+};
 
 //TODO have a way for a user to check what's in their cart
-// exports.getCart =
+exports.getCart = (req, res, next) => {
+
+};
 
 //TODO allows users to place orders
 // exports.placeOrder =

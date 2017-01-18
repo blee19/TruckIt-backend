@@ -1,6 +1,6 @@
 const User = require('../models/schemas/user');
 const Order = require('../models/schemas/order');
-const Truck = require('/..../models/schemas/truck');
+const Truck = require('../models/schemas/truck');
 
 exports.getMenuItems = (req, res, next) => {
     Truck.findById(req.params.truckId, (err, truck) => {
@@ -11,7 +11,7 @@ exports.getMenuItems = (req, res, next) => {
             if (!items) return res.status(404).send('No menu items under this truck');
             res.json(items);
         })
-           
+
     });
 };
 
@@ -24,7 +24,7 @@ exports.getMenuItem = (req, res, next) => {
             if (!item) return res.status(404).send('No menu item with that ID');
             res.json(item);
         });
-           
+
     });
 };
 
@@ -45,10 +45,9 @@ exports.createItem = (req, res, next) => {
                 if (err) return handleError(err)
                 console.log('Menu item added!');
             });
-
         });
-               
-    });
+
+    };
 
 
 exports.updateItemById = (req, res, next) => {
