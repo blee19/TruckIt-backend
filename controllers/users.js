@@ -178,16 +178,63 @@ exports.editOrder = (req, res, next) => {
 };
 
 //TODO have a way for a user to check what's in their cart
-exports.getCart = (req, res, next) => {
-    if (req.params.id !== req.user.id && !req.user.isSuperAdmin)
-        return res.status(403).send("You don't have permission to do that");
-    
-    res.status(200).send(sessionStorage.cart);
-};
+// exports.getCart = (req, res, next) => {
+//     if (req.params.id !== req.user.id && !req.user.isSuperAdmin)
+//         return res.status(403).send("You don't have permission to do that");
+//
+//     res.status(200).send(sessionStorage.cart);
+// };
 
 //TODO allows users to place orders
 exports.placeOrder = (req,res, next) => {
-
+    
+    if (!req.user.id) return res.status(403).send('Account required');
+    
+    var quantity = req.body.quantity || 1;
+    Promise.all([
+        User.findById(req.user.id).exec(),
+        Order.findById(req.params.id).exec()
+    ]).then((results) => {
+        var user = results[0];
+        var order = results[1];
+        if (!order) return res.status(404).send('No order with that ID');
+        if (!user) return res.status(401).send('Token user ID invalid');
+        
+        if (typeof item.inventory === 'number' && item.inventory < quantity) {
+            var err = new Error('Insufficient inventory');
+            err.status = 400;
+            throw err;
+        }
+        
+        // add purchase to user account
+        user.purchases.push({
+            name: item.name,
+            itemId: item.id,
+            price: item.price,
+            quantity: quantity,
+            purchasedDate: new Date()
+        });
+        user.markModified('purchases');
+        var userPromise = user.save();
+        userPromise.then((user) => {
+            // confirmation email
+            var mailConfig = {
+                from: `"${config.emailFromName}" <${config.emailFromAddress}>`,
+                to: user.email,
+                subject: 'HSA Dorm Supplies Confirmaion',
+                text: `Thank you for purchasing ${quantity} orders of ${item.name}. Please venmo $${quantity * item.price} to ${config.venmoAccount}.`
+            };
+            transporter.sendMail(mailConfig);
+            
+            if (typeof item.inventory !== 'number') return;
+            item.inventory -= quantity;
+            // TODO send email for low inventory
+            return item.save();
+        });
+    }).then(() => {
+        res.sendStatus(200)
+    }).catch((err) => next(err));
+    
 };
 
 //TODO gets users purchase history

@@ -28,8 +28,12 @@ User.find({email: config.superAdminEmail}, (err, superAdmins) => {
 	console.log(`${config.superAdminEmail} account not detected`);
 	
 	var newSuperAdmin = User({
+		firstname: config.superAdminfirstName,
 		email: config.superAdminEmail,
 		hash: config.superAdminPassword,
+		venmo: config.superAdminVenmo,
+		phone: config.superAdminPhone,
+		phoneProvider: config.superAdminPhoneProvider,
 		isSuperAdmin: true,
 		isAdmin: true
 	});
