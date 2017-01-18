@@ -1,4 +1,4 @@
 .idea/
 node_modules/
 .mongo_pid
-npm-debug.log
+**/npm-debug.log
