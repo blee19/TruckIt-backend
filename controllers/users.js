@@ -94,17 +94,6 @@ exports.deleteUser = (req, res, next) => {
 };
 
 exports.makeAdmin = (req, res, next) => {
-    if (Truck.findById(req.user.isAdmin) === )
-
-    if ( req.user.isAdmin !== req.params.id && !req.user.isSuperAdmin)
-        return res.status(403).send("You don't have permission to do that");
-    if ()
-    User.findByIdAndUpdate(req.user.id, req.body, (err, doc) => {
-
-    })
-}
-
-exports.makeAdmin = (req, res, next) => {
     if (!Truck.findById(req.user.isAdmin) && !req.user.isSuperAdmin)
         return res.status(403).send("You don't have permission to do that");
     User.findByIdAndUpdate(req.params.id, { isAdmin: req.body.isAdmin }, (err, user) => {
