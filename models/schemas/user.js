@@ -12,7 +12,7 @@ var userSchema = new Schema({
 	phone: {type: String, required: true, unique: true, sparse: true},
 	phoneProvider: {type: String, required: true},
 	isAdmin: [String],
-	isSuperAdmin: boolean,
+	isSuperAdmin: Boolean,
 	token: String
 	},
 

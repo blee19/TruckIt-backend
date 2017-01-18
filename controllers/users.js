@@ -1,6 +1,12 @@
 const mongoose = require('mongoose');
 const User = require('../models/schemas/user');
 
+exports.getAllUsers = (req, res, next) => {
+    User.find({}, (err, users) => {
+        if (err) return next(err);
+        res.json(users);
+    });
+};
 
 exports.getUserById = (req, res, next) => {
     if (req.params.id !== req.user.id && !req.user.isAdmin)
@@ -63,17 +69,17 @@ exports.getPendingOrders = (req, res, next) => {
     .catch((err) => next(err));
 };
 
-//TODO get a list of active trucks
-exports.getActiveTrucks =
-
-//TODO adds item to user's current order (add to sessionStorage).
-exports.editOrder =
-
-//TODO have a way for a user to check what's in their cart
-exports.getCart = 
-
-//TODO allows users to place orders
-exports.placeOrder =
-
-//TODO gets users purchase history
-exports.getOrderHistory =
+// //TODO get a list of active trucks
+// exports.getActiveTrucks =
+//
+// //TODO adds item to user's current order (add to sessionStorage).
+// exports.editOrder =
+//
+// //TODO have a way for a user to check what's in their cart
+// exports.getCart =
+//
+// //TODO allows users to place orders
+// exports.placeOrder =
+//
+// //TODO gets users purchase history
+// exports.getOrderHistory =
