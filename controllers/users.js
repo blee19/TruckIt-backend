@@ -146,9 +146,21 @@ exports.getCart = (req, res, next) => {
 };
 
 //TODO allows users to place orders
-// exports.placeOrder =
+exports.placeOrder = (req,res, next) => {
+
+};
 
 //TODO gets users purchase history
-// exports.getOrderHistory =
+exports.getOrderHistory = (req, res, next) => {
 
-//TODO
+};
+
+//TODO make a function that creats an admin. should be the exact same as the one that makes users except also adds an admin field.
+exports.makeAdmin = (req,res,next) => {
+
+};
+
+//TODO make a fucntion that updaetes the admin value for a specific user.
+exports.removeAdminPrivs = (req, res, next) => {
+
+};

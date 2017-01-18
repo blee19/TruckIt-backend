@@ -58,7 +58,7 @@ router.route('/users/:id')
 	.delete(auth.validateToken, users.deleteUser);
 
 router.route('/users/pending/:id')
-	.get(auth.adminRequired, users.getPendingByUserId);
+	.get(auth.adminRequired, users.getPendingOrders);
 router.route('/users/cart/:id')
 	.get(auth.adminRequired, users.getCart);
 
@@ -89,7 +89,7 @@ router.route('/trucks/orders/:orderId')
 router.route('/items/:truckId/:itemId')
 	.get(auth.adminRequired,admins.getMenuItem)
 	.post(auth.adminRequired, admins.createItem)
-	.put(auth.adminRequired, admins.UpdateItem)
+	.put(auth.adminRequired, admins.updateItem)
 	.delete(auth.adminRequired, admins.deleteItem);
 
 // router.route('/items/:id')
