@@ -61,7 +61,7 @@ exports.createUser = (req, res, next) => {
     if (req.body.password) {
         req.body.hash = req.body.password;
     }
-    
+
     var newUser = new User(userData);
     newUser.save((err, user) => {
         if (err) {
@@ -142,7 +142,7 @@ exports.editOrder = (req, res, next) => {
 
 //TODO have a way for a user to check what's in their cart
 exports.getCart = (req, res, next) => {
-    
+
 };
 
 //TODO allows users to place orders
@@ -152,4 +152,3 @@ exports.getCart = (req, res, next) => {
 // exports.getOrderHistory =
 
 //TODO
-    
