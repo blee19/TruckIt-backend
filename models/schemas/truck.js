@@ -14,7 +14,7 @@ var truckSchema = new Schema({
 				price: Number,
 				name: String,
 				img: String,
-				inStock: boolean,
+				inStock: Boolean,
 				ordersPlaced: Number
 			}
 		}],
