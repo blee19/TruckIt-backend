@@ -134,7 +134,12 @@ exports.editOrder = (req, res, next) => {
     Order.findByIdAndUpdate(req.params.id, req.body, (err, order) => {
         if (err) return next(err);
         if (!order) return res.status(404).send('No item with that ID');
-        res.Status(200).json({
+    
+        // allows users to see their cart of orders
+        sessionStorage.cart = [];
+        sessionStorage.cart.push(req.body);
+        
+        res.status(200).json({
             message: 'We updated your order'
         });
     });
@@ -142,7 +147,10 @@ exports.editOrder = (req, res, next) => {
 
 //TODO have a way for a user to check what's in their cart
 exports.getCart = (req, res, next) => {
+    if (req.params.id !== req.user.id && !req.user.isSuperAdmin)
+        return res.status(403).send("You don't have permission to do that");
     
+    if
 };
 
 //TODO allows users to place orders
