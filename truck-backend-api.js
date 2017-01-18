@@ -72,9 +72,9 @@ router.route('/admins/:id')
 router.route('/trucks')
 	.get(users.getActiveTrucks);
 
-router.route('/trucks/:id')
+router.route('/trucks/:truckId')
 	.get(admins.getMenuItems);
-router.route('/trucks/history/:id')
+router.route('/trucks/history/:truckId')
 	.get(auth.adminRequired, admins.getOrderHistory);
 router.route('/trucks/pending/:truckId')
 	.get(auth.adminRequired, admins.getPendingOrders);
