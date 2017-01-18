@@ -59,7 +59,7 @@ router.route('/users/:id')
 router.route('/users/:id/pending')
 	.get(auth.adminRequired, users.getPendingByUserId);
 router.route('/users/:id/cart')
-	.get(auth.adminRequired, users.getCart);
+	.get(auth.adminRequired, users.getCart)
 	.post(auth.adminRequired, users.placeOrder);
 router.route('/users/:id/history')
 	.get(auth.adminRequired, users.getOrderHistory);
@@ -84,8 +84,8 @@ router.route('/trucks/orders/:orderId')
 
 router.route('/items/:truckId/:itemId')
 	.get(auth.adminRequired,admins.getMenuItem)
-	.post(auth.adminRequired, admins.createItem);
-	.put(auth.adminRequired, admins.UpdateItem);
+	.post(auth.adminRequired, admins.createItem)
+	.put(auth.adminRequired, admins.UpdateItem)
 	.delete(auth.adminRequired, admins.deleteItem);
 
 // router.route('/items/:id')
