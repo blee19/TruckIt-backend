@@ -48,7 +48,7 @@ router.param('subId', (req, res, next, id) => {
 // ==================================================
 
 router.route('/users')
-	.get(users.getAllUsers)
+	.get(auth.superAdminRequired, users.getAllUsers)
 	.post(users.createUser);
 // router.route('/users/pending')
 // 	.get(auth.adminRequired, users.getUndeliveredAndUnpaidPurchases);
@@ -96,8 +96,8 @@ router.route('/items/:truckId/:itemId')
 // 	.put(auth.adminRequired, items.updateItemById)
 // 	.delete(auth.adminRequired, items.deleteItem);
 //
-// router.route('/auth/token')
-// 	.post(auth.loginUser);
+router.route('/auth/token')
+ 	.post(auth.loginUser);
 
 app.use('/', router);
 
