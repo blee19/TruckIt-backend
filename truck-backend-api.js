@@ -52,23 +52,41 @@ router.route('/users')
 	.post(users.createUser);
 // router.route('/users/pending')
 // 	.get(auth.adminRequired, users.getUndeliveredAndUnpaidPurchases);
-// router.route('/users/:id')
-// 	.get(auth.validateToken, users.getUserById)
-// 	.put(auth.validateToken, users.updateUser)
-// 	.delete(auth.validateToken, users.deleteUser);
-// router.route('/users/:id/pending')
-// 	.get(auth.adminRequired, users.getPendingByUserId);
-// router.route('/users/:id/pending/:subId')
-// 	.post(auth.adminRequired, users.markPendingPaid)
-// 	.delete(auth.adminRequired, users.markPendingDelivered);
+router.route('/users/:id')
+	.get(auth.validateToken, users.getUserById)
+	.put(auth.validateToken, users.updateUser)
+	.delete(auth.validateToken, users.deleteUser);
+router.route('/users/:id/pending')
+	.get(auth.adminRequired, users.getPendingByUserId);
+router.route('/users/:id/cart')
+	.get(auth.adminRequired, users.getCart);
+	.post(auth.adminRequired, users.placeOrder);
+router.route('/users/:id/history')
+	.get(auth.adminRequired, users.getOrderHistory);
 
-// router.route('/admins/:id')
-// 	.post(auth.adminRequired, users.makeAdmin)
-// 	.delete(auth.adminRequired, users.removeAdminPrivs);
-//
-// router.route('/items')
-// 	.get(items.getAllItems)
-// 	.post(auth.adminRequired, items.createItem);
+
+router.route('/admins/:id')
+	.post(auth.superAdminRequired, users.makeAdmin)
+	.delete(auth.superAdminRequired, users.removeAdminPrivs);
+
+router.route('/trucks')
+	.get(users.getActiveTrucks);
+
+router.route('/trucks/:truckId')
+	.get(admins.getMenuItems);
+router.route('/trucks/history/:truckId')
+	.get(auth.adminRequired, admins.getOrderHistory);
+router.route('/trucks/pending/:truckId')
+	.get(auth.adminRequired, admins.getPendingOrders);
+router.route('/trucks/orders/:orderId')
+	.put(auth.adminRequired, admins.markOrderComplete);
+
+
+router.route('/items/:truckId/:itemId')
+	.get(auth.adminRequired,admins.getMenuItem)
+	.post(auth.adminRequired, admins.createItem);
+	.put(auth.adminRequired, admins.UpdateItem);
+	.delete(auth.adminRequired, admins.deleteItem);
 
 // router.route('/items/:id')
 // 	.get(items.getItemById)

@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const User = require('../models/schemas/user');
 const validator = require('email-validator');
+const Truck = require('../models/schemas/truck');
+const Order = require('../models/schemas/order');
 
 exports.getAllUsers = (req, res, next) => {
     User.find({}, (err, users) => {
@@ -56,9 +58,10 @@ exports.createUser = (req, res, next) => {
             userData.email = req.body.email;
     }
 
-    if (req.body.password)
+    if (req.body.password) {
         req.body.hash = req.body.password;
-
+    }
+    
     var newUser = new User(userData);
     newUser.save((err, user) => {
         if (err) {
@@ -117,17 +120,26 @@ exports.getPendingOrders = (req, res, next) => {
     .catch((err) => next(err));
 };
 
-// //TODO get a list of active trucks
-// exports.getActiveTrucks =
-//
-// //TODO adds item to user's current order (add to sessionStorage).
+//TODO get a list of active trucks
+exports.getActiveTrucks = (req, res, next) => {
+    Truck.find({}, (err, trucks) => {
+        if (err) return next(err);
+        res.json(trucks);
+    });
+};
+
+
+//TODO adds item to user's current order (add to sessionStorage).
 // exports.editOrder =
-//
-// //TODO have a way for a user to check what's in their cart
+
+//TODO have a way for a user to check what's in their cart
 // exports.getCart =
-//
-// //TODO allows users to place orders
+
+//TODO allows users to place orders
 // exports.placeOrder =
-//
-// //TODO gets users purchase history
+
+//TODO gets users purchase history
 // exports.getOrderHistory =
+
+//TODO
+    

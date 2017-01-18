@@ -3,7 +3,7 @@ const Order = require('../models/schemas/order');
 const Truck = require('/..../models/schemas/truck');
 
 exports.getMenuItems = (req, res, next) => {
-    Truck.findById(req.params.id, (err, truck) => {
+    Truck.findById(req.params.truckId, (err, truck) => {
         if (err) return next(err);
         if (!truck) return res.status(404).send('No truck with that ID');
         truck.menu.find({}, (err, items) => {
@@ -75,25 +75,25 @@ exports.deleteItem = (req, res, next) => {
 };
 
 exports.getPendingOrders = (req, res, next) => {
-    Order.find({truck: req.body.companyName, complete: null}, (err, item) => {
+    Order.find({truck: req.params.truckId, completed: null}, (err, orders) => {
         if (err) return next(err);
-        if (!item) return res.status(404).send('No item with that ID');
-        res.json(item);
+        if (!orders) return res.status(404).send('No pending orders for this truck');
+        res.json(orders);
     });
 };
 
 exports.markOrderComplete = (req, res, next) => {
-    Order.findByIdAndUpdate(req.params.id, {isComplete: true}, (err, doc) => { //not sure if this will error....:/
+    Order.findByIdAndUpdate(req.params.id, {isComplete: true}, {new:true}, (err, doc) => { //not sure if this will error....:/
         if (err) return next(err);
         if (!doc) return res.status(404).send('No order with that ID');
-        res.sendStatus(200);
+        res.json(doc);
     });
 };
 
 exports.getOrderHistory = (req, res, next) => {
-    Order.find({truck: req.body.truck}, (err, item) => {
+    Order.find({truck: req.params.truckId}, (err, orders) => {
         if (err) return next(err);
-        if (!item) return res.status(404).send('No item with that ID');
-        res.json(item);
+        if (!orders) return res.status(404).send('No order history for this truck');
+        res.json(orders);
     });
 };
