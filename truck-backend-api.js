@@ -81,15 +81,16 @@ router.route('/trucks/:id/history')
 	
 
 
-router.route('/items/:truckId')
-	.get(auth.adminRequired,items.getMenuItems)
-	.post(auth.adminRequired, items.createItem);
-	.post(auth.adminRequired, items.UpdateItem);
-router.route('/items/:id')
-	.get(items.getItemById)
-	.post(auth.validateToken, items.purchaseItem)
-	.put(auth.adminRequired, items.updateItemById)
-	.delete(auth.adminRequired, items.deleteItem);
+router.route('/items/:truckId/:itemId')
+	.get(auth.adminRequired,admins.getMenuItem)
+	.post(auth.adminRequired, admins.createItem);
+	.put(auth.adminRequired, admins.UpdateItem);
+	.delete(auth.adminRequired, admins.deleteItem);
+// router.route('/items/:id')
+// 	.get(items.getItemById)
+// 	.post(auth.validateToken, items.purchaseItem)
+// 	.put(auth.adminRequired, items.updateItemById)
+// 	.delete(auth.adminRequired, items.deleteItem);
 
 router.route('/auth/token')
 	.post(auth.loginUser);
