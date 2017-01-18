@@ -7,8 +7,8 @@ module.exports = {
 	secret: "truckit-secret",
 	
 	// for first admin
-	adminEmail: 'brandonlee@college.harvard.edu',
-	adminPassword: 'brandon',
+	superAdminEmail: 'brandonlee@college.harvard.edu',
+	superAdminPassword: 'brandon',
 	
 	// for sending emails
 	// TODO change this email
