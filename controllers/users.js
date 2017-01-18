@@ -117,16 +117,23 @@ exports.getPendingOrders = (req, res, next) => {
 };
 
 //TODO get a list of active trucks
-exports.getActiveTrucks =
+exports.getActiveTrucks = (req, res, next) => {
+    if (req.params.id !== req.user.id && !req.user.isAdmin)
+        return res.status(403).send("You don't have permission to see all the active trucks");
+}
+
 
 //TODO adds item to user's current order (add to sessionStorage).
-exports.editOrder =
+// exports.editOrder =
 
 //TODO have a way for a user to check what's in their cart
-exports.getCart = 
+// exports.getCart =
 
 //TODO allows users to place orders
-exports.placeOrder =
+// exports.placeOrder =
 
 //TODO gets users purchase history
-exports.getOrderHistory =
+// exports.getOrderHistory =
+
+//TODO
+    
