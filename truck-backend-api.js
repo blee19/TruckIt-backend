@@ -59,9 +59,6 @@ router.route('/users/:id')
 
 router.route('/users/pending/:id')
 	.get(auth.adminRequired, users.getPendingOrders);
-router.route('/users/cart/:id')
-	.get(auth.adminRequired, users.getCart);
-
 
 router.route('/users/cart/:id')
 	.get(auth.adminRequired, users.getCart)
