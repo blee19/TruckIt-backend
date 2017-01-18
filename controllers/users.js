@@ -24,17 +24,23 @@ exports.getUserById = (req, res, next) => {
 };
 
 exports.createUser = (req, res, next) => {
+
+    var userData = {};
+
+    if (req.body.firstName && typeof req.body.firstName === 'string') {
+        userData.firstName = req.body.firstName;
+    } else {res.status(400).send('No first name');}
+    if (req.body.lastName && typeof req.body.lastName === 'string') {
+        userData.lastName = req.body.lastName;
+    } else {res.status(400).send('No last name');}
+
     if (typeof req.body.phone !== 'string')
         return res.status(400).send('No phone');
     if (typeof req.body.phoneProvider !== 'string')
         return res.status(400).send('No phoneProvider');
 
-    var userData = {};
 
-    if (req.body.firstName && typeof req.body.firstName === 'string')
-        userData.firstName = req.body.firstName;
-    if (req.body.lastName && typeof req.body.lastName === 'string')
-        userData.lastName = req.body.lastName;
+
 
     if (req.body.phoneProvider === 'other') {
         if (typeof req.body['other-provider'] !== 'string')
