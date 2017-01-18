@@ -51,15 +51,6 @@ exports.createItem = (req, res, next) => {
     });
 
 
-
-
-        Truck.findByIdAndUpdate(req.params.id, req.body, {new:true}, (err, doc) => {
-        if (err) return next(err);
-        if (!doc) return res.status(404).send('No item with that ID');
-        res.sendStatus(200);
-    });
-};
-
 exports.updateItemById = (req, res, next) => {
         Truck.findById(req.params.TruckId, (err, truck) => {
             if (err) return next(err);
