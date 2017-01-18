@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const User = require('../models/schemas/user');
 const validator = require('email-validator');
+const Truck = require('../models/schemas/truck');
+const Order = require('../models/schemas/order');
 
 exports.getAllUsers = (req, res, next) => {
     User.find({}, (err, users) => {
@@ -120,9 +122,11 @@ exports.getPendingOrders = (req, res, next) => {
 
 //TODO get a list of active trucks
 exports.getActiveTrucks = (req, res, next) => {
-    if (req.params.id !== req.user.id && !req.user.isAdmin)
-        return res.status(403).send("You don't have permission to see all the active trucks");
-}
+    Truck.find({}, (err, trucks) => {
+        if (err) return next(err);
+        res.json(trucks);
+    });
+};
 
 
 //TODO adds item to user's current order (add to sessionStorage).
