@@ -32,7 +32,7 @@ exports.createUser = (req, res, next) => {
     } else {res.status(400).send('No first name');}
     if (req.body.lastName && typeof req.body.lastName === 'string') {
         userData.lastName = req.body.lastName;
-    } else {res.status(400).send('No last name');}
+    }
 
     if (typeof req.body.phone !== 'string')
         return res.status(400).send('No phone');
