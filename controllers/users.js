@@ -6,8 +6,9 @@ exports.getAllUsers = (req, res, next) => {
     User.find({}, (err, users) => {
         if (err) return next(err);
         res.json(users);
-    })
-}
+    });
+};
+
 exports.getUserById = (req, res, next) => {
     if (req.params.id !== req.user.id && !req.user.isSuperAdmin)
         return res.status(403).send("You don't have permission to do that");
@@ -55,9 +56,10 @@ exports.createUser = (req, res, next) => {
             userData.email = req.body.email;
     }
 
-    if (req.body.password) 
+    if (req.body.password) {
         req.body.hash = req.body.password;
-
+    }
+    
     var newUser = new User(userData);
     newUser.save((err, user) => {
         if (err) {
