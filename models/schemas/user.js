@@ -28,10 +28,10 @@ var userSchema = new Schema({
 userSchema.pre('save', function (callback) {
 	if (!this.email)
         return callback(new Error('Missing email'));
-    if (!this.hash)
+    if (!this.password)
         return callback(new Error('Missing password'));
-    if (this.isModified('hash'))
-        this.hash = bcrypt.hashSync(this.hash);
+    if (this.isModified('password'))
+        this.password = bcrypt.passwordSync(this.password);
 
     if (!this.phone)
         return callback(new Error('Missing phone'));
@@ -60,14 +60,14 @@ userSchema.pre('save', function (callback) {
 
 // methods for validating password
 userSchema.methods.comparePassword = function(pw, callback) {
-    //console.log(pw + " " + this.hash);
-    bcrypt.compare(pw, this.hash, (err, isMatch) => {
+    //console.log(pw + " " + this.password);
+    bcrypt.compare(pw, this.password, (err, isMatch) => {
         if (err) return callback(err);
         callback(null, isMatch);
     });
 };
 userSchema.methods.comparePasswordSync = function(pw) {
-    return bcrypt.compareSync(pw, this.hash);
+    return bcrypt.compareSync(pw, this.password);
 };
 
 

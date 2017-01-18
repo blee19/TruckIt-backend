@@ -4,6 +4,8 @@ const validator = require('email-validator');
 const Truck = require('../models/schemas/truck');
 const Order = require('../models/schemas/order');
 
+var sessionStorage.cart = [];
+
 exports.getAllUsers = (req, res, next) => {
     User.find({}, (err, users) => {
         if (err) return next(err);
@@ -93,13 +95,36 @@ exports.deleteUser = (req, res, next) => {
     });
 };
 
-/*exports.makeAdmin = (req, res, next) => {
-    if (!req.user.isAdmin && !req.user.isSuperAdmin)
+exports.makeAdmin = (req, res, next) => {
+    if (Truck.findById(req.user.isAdmin) === )
+
+    if ( req.user.isAdmin !== req.params.id && !req.user.isSuperAdmin)
         return res.status(403).send("You don't have permission to do that");
+    if ()
     User.findByIdAndUpdate(req.user.id, req.body, (err, doc) => {
 
     })
-}*/
+}
+
+exports.makeAdmin = (req, res, next) => {
+    if (!Truck.findById(req.user.isAdmin) && !req.user.isSuperAdmin)
+        return res.status(403).send("You don't have permission to do that");
+    User.findByIdAndUpdate(req.params.id, { isAdmin: req.body.isAdmin }, (err, user) => {
+        if (err) return next(err);
+        if (!user) return res.status(404).send('No user with that ID');
+        res.sendStatus(200);
+    });
+};
+
+exports.removeAdminPrivs = (req, res, next) => {
+    if (!Truck.findById(req.user.isAdmin) && !req.user.isSuperAdmin)
+        return res.status(403).send("You don't have permission to do that");
+    User.findByIdAndUpdate(req.params.id, { isAdmin: null }, (err, user) => {
+        if (err) return next(err);
+        if (!user) return res.status(404).send('No user with that ID');
+        res.sendStatus(200);
+    });
+};
 
 //TODO fix so that it gets a users pending orders from Orders DB
 exports.getPendingOrders = (req, res, next) => {
@@ -142,20 +167,74 @@ exports.editOrder = (req, res, next) => {
     Order.findByIdAndUpdate(req.params.id, req.body, (err, order) => {
         if (err) return next(err);
         if (!order) return res.status(404).send('No item with that ID');
-        res.Status(200).json({
+    
+        // allows users to see their cart of orders
+        sessionStorage.cart.push(req.body);
+        
+        res.status(200).json({
             message: 'We updated your order'
         });
     });
 };
 
 //TODO have a way for a user to check what's in their cart
-exports.getCart = (req, res, next) => {
-
-};
+// exports.getCart = (req, res, next) => {
+//     if (req.params.id !== req.user.id && !req.user.isSuperAdmin)
+//         return res.status(403).send("You don't have permission to do that");
+//
+//     res.status(200).send(sessionStorage.cart);
+// };
 
 //TODO allows users to place orders
 exports.placeOrder = (req,res, next) => {
-
+    
+    if (!req.user.id) return res.status(403).send('Account required');
+    
+    var quantity = req.body.quantity || 1;
+    Promise.all([
+        User.findById(req.user.id).exec(),
+        Order.findById(req.params.id).exec()
+    ]).then((results) => {
+        var user = results[0];
+        var order = results[1];
+        if (!order) return res.status(404).send('No order with that ID');
+        if (!user) return res.status(401).send('Token user ID invalid');
+        
+        if (typeof item.inventory === 'number' && item.inventory < quantity) {
+            var err = new Error('Insufficient inventory');
+            err.status = 400;
+            throw err;
+        }
+        
+        // add purchase to user account
+        user.purchases.push({
+            name: item.name,
+            itemId: item.id,
+            price: item.price,
+            quantity: quantity,
+            purchasedDate: new Date()
+        });
+        user.markModified('purchases');
+        var userPromise = user.save();
+        userPromise.then((user) => {
+            // confirmation email
+            var mailConfig = {
+                from: `"${config.emailFromName}" <${config.emailFromAddress}>`,
+                to: user.email,
+                subject: 'HSA Dorm Supplies Confirmaion',
+                text: `Thank you for purchasing ${quantity} orders of ${item.name}. Please venmo $${quantity * item.price} to ${config.venmoAccount}.`
+            };
+            transporter.sendMail(mailConfig);
+            
+            if (typeof item.inventory !== 'number') return;
+            item.inventory -= quantity;
+            // TODO send email for low inventory
+            return item.save();
+        });
+    }).then(() => {
+        res.sendStatus(200)
+    }).catch((err) => next(err));
+    
 };
 
 //TODO gets users purchase history
