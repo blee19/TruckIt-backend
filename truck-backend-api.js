@@ -72,7 +72,7 @@ router.route('/admins/:id')
 
 
 router.route('/trucks')
-	.get(auth.adminRequired, users.getActiveTrucks)
+	.get(users.getActiveTrucks)
 	.post(auth.adminRequired, users.makeTruck);
 router.route('/trucks/:id')
 	.put(auth.adminRequired, users.editTruck)
