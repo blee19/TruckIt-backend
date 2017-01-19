@@ -96,8 +96,8 @@ router.route('/items/:truckId/:itemId')
 // 	.put(auth.adminRequired, items.updateItemById)
 // 	.delete(auth.adminRequired, items.deleteItem);
 //
-// router.route('/auth/token')
-// 	.post(auth.loginUser);
+router.route('/auth/token')
+	.post(auth.loginUser);
 
 app.use('/', router);
 
