@@ -49,13 +49,19 @@ router.route('/users/:id')
 	.get(auth.validateToken, users.getUserById)
 	.put(auth.validateToken, users.updateUser)
 	.delete(auth.validateToken, users.deleteUser);
-//
-// router.route('/users/pending/:id')
-// 	.get(auth.adminRequired, users.getPendingOrders);
 
-router.route('/users/cart/:id')
-//	.get(auth.adminRequired, users.getCart)
-	.post(auth.adminRequired, users.placeOrder);
+
+router.route('/orders')
+	.get(auth.adminRequired, users.getPaidOrders)
+	.post(auth.validateToken, users.placeOrder);
+
+//TODO THESE ARE NOT DONE YET....
+router.route('/users/cart')
+	.get(auth.validateToken, users.getCart);
+
+// router.route('/users/cart/:id')
+// 	.get(auth.adminRequired, users.getACart)
+// 	.post(auth.adminRequired, users.placeOrder);
 router.route('/users/history/:id')
 	.get(auth.adminRequired, users.getOrderHistory);
 
@@ -72,6 +78,9 @@ router.route('/trucks/:id')
 	.put(auth.adminRequired, users.editTruck)
 	.get(auth.adminRequired, users.getTruck)
 	.delete(auth.adminRequired, users.deleteTruck);
+
+
+// TODO these do not work... yet
 router.route('/trucks/history/:id')
 	.get(auth.adminRequired, admins.getOrderHistory);
 router.route('/trucks/pending/:id')

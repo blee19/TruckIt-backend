@@ -39,28 +39,27 @@ exports.getMenuItem = (req, res, next) => {
 // };
 
 exports.createItem = (req, res, next) => {
-     Truck.findById(req.params.TruckId, (err, truck) => {
-            if (err) return next(err);
-            if (!truck) return res.status(404).send('No truck with that ID');
-            truck.menu.push(req.body);
-            truck.save(function (err) {
-                if (err) return handleError(err)
-                console.log('Menu item added!');
-            });
+    Truck.findById(req.params.TruckId, (err, truck) => {
+        if (err) return next(err);
+        if (!truck) return res.status(404).send('No truck with that ID');
+        truck.menu.push(req.body);
+        truck.save(function (err) {
+            if (err) return handleError(err)
+            console.log('Menu item added!');
         });
-
-    };
+    });
+};
 
 
 exports.updateItem = (req, res, next) => {
-        Truck.findById(req.params.TruckId, (err, truck) => {
+    Truck.findById(req.params.TruckId, (err, truck) => {
+        if (err) return next(err);
+        if (!truck) return res.status(404).send('No truck with that ID');
+        truck.items.findByIdAndUpdate(req.params.itemId, req.body, {new:true}, (err, truck) => {
             if (err) return next(err);
-            if (!truck) return res.status(404).send('No truck with that ID');
-            truck.items.findByIdAndUpdate(req.params.itemId, req.body, {new:true}, (err, truck) => {
-                if (err) return next(err);
-                if (!truck) return res.status(404).send('No item with that ID');
-            })
-            res.sendStatus(200);
+            if (!truck) return res.status(404).send('No item with that ID');
+        })
+        res.sendStatus(200);
     });
 };
 
