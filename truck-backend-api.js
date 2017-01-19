@@ -1,7 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
-const favicon = require('serve-favicon');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 
@@ -59,8 +58,8 @@ router.route('/users/:id')
 	.put(auth.validateToken, users.updateUser)
 	.delete(auth.validateToken, users.deleteUser);
 
-router.route('/users/pending/:id')
-	.get(auth.adminRequired, users.getPendingOrders);
+// router.route('/users/pending/:id')
+// 	.get(auth.adminRequired, users.getPendingOrders);
 
 router.route('/users/cart/:id')
 //	.get(auth.adminRequired, users.getCart)

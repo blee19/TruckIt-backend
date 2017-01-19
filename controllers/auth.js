@@ -24,7 +24,7 @@ exports.loginUser = (req, res, next) => {
 			if (user.firstName) payload.firstName = user.firstName;
 			if (user.lastName) payload.lastName = user.lastName;
 			if (user.isSuperAdmin) payload.isSuperAdmin = user.isSuperAdmin;
-			if (user.isAdmin) payload.isAdmin = user.isAdmin;
+
 
 			var token = jwt.encode(payload, config.secret);
 			user.token = token;
@@ -38,7 +38,7 @@ exports.loginUser = (req, res, next) => {
 
 exports.validateToken = (req, res, next) => validateToken(req, res, next);
 
-exports.superAdminRequired = (req, res, next) => validateToken(req, res, next, true, true);
+exports.superAdminRequired = (req, res, next) => validateToken(req, res, next, true, false);
 
 exports.adminRequired = (req, res, next) => validateToken(req, res, next, false, true);
 
