@@ -11,7 +11,7 @@ var userSchema = new Schema({
 	email: {type: String, required: true, trim: true, unique: true},
 	phone: {type: String, required: true, unique: true, sparse: true},
 	phoneProvider: {type: String, required: true},
-	isAdmin: {type: Schema.ObjectId, ref: 'Truck'},
+	isAdmin: Boolean, // {type: Schema.ObjectId, ref: 'Truck'}
 	isSuperAdmin: Boolean,
 	token: String
 	},

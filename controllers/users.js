@@ -240,8 +240,26 @@ exports.getOrderHistory = (req, res, next) => {
 };
 
 //TODO make a function that creats an admin. should be the exact same as the one that makes users except also adds an admin field.
-exports.makeAdmin = (req,res,next) => {
+exports.makeTruck = (req,res,next) => {
+    
 
+    
+    
+    
+    
+    var newTruck = new Truck(req.body);
+    newTruck.save((err, user) => {
+        if (err) {
+            console.log(err);
+            if (err.code === 11000)
+                return res.status(400).send('Email, phone, or venmo account number already registered');
+            return next(err);
+        }
+        return res.sendStatus(200);
+    });
+    
+    
+    
 };
 
 //TODO make a fucntion that updaetes the admin value for a specific user.

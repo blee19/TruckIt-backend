@@ -73,9 +73,10 @@ router.route('/admins/:id')
 	.post(auth.superAdminRequired, users.makeAdmin)
 	.delete(auth.superAdminRequired, users.removeAdminPrivs);
 
-router.route('/trucks')
-	.get(users.getActiveTrucks);
 
+router.route('/trucks')
+	.get(users.getActiveTrucks)
+	.post(auth.superAdminRequired, users.makeTruck);
 router.route('/trucks/:truckId')
 	.get(admins.getMenuItems);
 router.route('/trucks/history/:truckId')

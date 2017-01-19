@@ -35,6 +35,7 @@ User.find({email: config.superAdminEmail}, (err, superAdmins) => {
 		phone: config.superAdminPhone,
 		phoneProvider: config.superAdminPhoneProvider,
 		isSuperAdmin: true,
+		isAdmin: true
 	});
 
 	newSuperAdmin.save((err) => {
