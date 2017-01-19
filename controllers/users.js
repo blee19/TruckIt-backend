@@ -123,32 +123,32 @@ exports.removeAdminPrivs = (req, res, next) => {
     });
 };
 
-//TODO fix so that it gets a users pending orders from Orders DB
-exports.getPendingOrders = (req, res, next) => {
-    User.aggregate([
-        { $match: {
-            $and: [
-                {'purchases.purchasedDate': {$exists: true}},
-                {$or: [
-                    {'purchased.isPaid': false},
-                    {'purchased.deliveredDate': {$exists: false}}
-                ]}
-            ]
-        }},
-        { $project: {
-            email: true,
-            purchases: { $filter: {
-                input: '$purchases',
-                as: 'p',
-                cond: { $or: [
-                    { $ne: ['$$p.isPaid', true] },
-                    { $lt: ['$$p.deliveredDate', 1 ]}
-                ]}
-            }}
-        }}
-    ]).exec().then((users) => res.json(users))
-    .catch((err) => next(err));
-};
+// //TODO fix so that it gets a users pending orders from Orders DB
+// exports.getPendingOrders = (req, res, next) => {
+//     User.aggregate([
+//         { $match: {
+//             $and: [
+//                 {'purchases.purchasedDate': {$exists: true}},
+//                 {$or: [
+//                     {'purchased.isPaid': false},
+//                     {'purchased.deliveredDate': {$exists: false}}
+//                 ]}
+//             ]
+//         }},
+//         { $project: {
+//             email: true,
+//             purchases: { $filter: {
+//                 input: '$purchases',
+//                 as: 'p',
+//                 cond: { $or: [
+//                     { $ne: ['$$p.isPaid', true] },
+//                     { $lt: ['$$p.deliveredDate', 1 ]}
+//                 ]}
+//             }}
+//         }}
+//     ]).exec().then((users) => res.json(users))
+//     .catch((err) => next(err));
+// };
 
 //TODO get a list of active trucks
 exports.getActiveTrucks = (req, res, next) => {
