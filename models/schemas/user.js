@@ -9,7 +9,7 @@ var userSchema = new Schema({
 	password: {type: String, required: true},
 	venmo: {type: String, unique: true, required: true},
 	email: {type: String, required: true, trim: true, unique: true},
-	phone: {type: String, required: true, unique: true, sparse: true},
+	phone: {type: String, required: true, unique: true},
 	phoneProvider: {type: String, required: true},
 	isAdmin: Boolean, // {type: Schema.ObjectId, ref: 'Truck'}
 	isSuperAdmin: Boolean,

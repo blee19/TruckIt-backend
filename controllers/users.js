@@ -4,8 +4,6 @@ const validator = require('email-validator');
 const Truck = require('../models/schemas/truck');
 const Order = require('../models/schemas/order');
 
-// var sessionStorage.cart = [];
-
 exports.getAllUsers = (req, res, next) => {
     User.find({}, (err, users) => {
         if (err) return next(err);

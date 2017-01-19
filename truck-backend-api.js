@@ -58,9 +58,9 @@ router.route('/users/:id')
 	.get(auth.validateToken, users.getUserById)
 	.put(auth.validateToken, users.updateUser)
 	.delete(auth.validateToken, users.deleteUser);
-
-router.route('/users/pending/:id')
-	.get(auth.adminRequired, users.getPendingOrders);
+//
+// router.route('/users/pending/:id')
+// 	.get(auth.adminRequired, users.getPendingOrders);
 
 router.route('/users/cart/:id')
 //	.get(auth.adminRequired, users.getCart)
@@ -129,7 +129,7 @@ app.use((err, req, res, next) => {
 	var status = err.status || 500;
 	if (status >= 400 && status < 500 && err.message)
 		var message = err.message;
-	else var message = ''
+	else var message = '';
 	res.status(status).send(message);
 });
 

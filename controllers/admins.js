@@ -15,6 +15,8 @@ exports.getMenuItems = (req, res, next) => {
     });
 };
 
+// var doc = parent.children.id(_id);
+
 exports.getMenuItem = (req, res, next) => {
     Truck.findById(req.params.TruckId, (err, truck) => {
         if (err) return next(err);

@@ -7,7 +7,7 @@ var truckSchema = new Schema({
 		location: String,
 		venmo: {type: String, required: true, trim: true},
 		email: {type: String, required: true, trim: true, unique: true},
-		phone: {type: String, unique: true},
+		phone: {type: String, unique: true, required: true},
 		phoneProvider: String,
 		isActive: Boolean,
 		isSoftDeleted: Boolean,

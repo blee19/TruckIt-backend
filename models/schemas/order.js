@@ -3,8 +3,8 @@ const Schema = mongoose.Schema;
 
 var orderSchema = new Schema({
 
-	user: {type: String, required: true, trim: true},
-	truck: {type: String, required: true},
+	user: {type: Schema.ObjectId, required: true, trim: true},
+	truck: {type: Schema.ObjectId, required: true},
 	purchasedItems: [{
 		item: {
 			price: Number,
