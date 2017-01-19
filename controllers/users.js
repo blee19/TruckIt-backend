@@ -158,6 +158,16 @@ exports.getActiveTrucks = (req, res, next) => {
     });
 };
 
+exports.getTruck = (req, res, next) => {
+    if (req.params.id !== req.user.id && !req.user.isAdmin)
+        return res.status(403).send("You don't have permission to do that");
+    Truck.findById(req.params.id, (err, truck) => {
+        if (err) return next(err);
+        if (!truck) return res.status(404).send('No user with that ID');
+        res.json(truck);
+    });
+};
+
 
 //TODO adds item to user's current order (add to sessionStorage).
 exports.editOrder = (req, res, next) => {
@@ -170,6 +180,17 @@ exports.editOrder = (req, res, next) => {
 
         res.status(200).json({
             message: 'We updated your order'
+        });
+    });
+};
+
+exports.editTruck = (req, res, next) => {
+    Truck.findByIdAndUpdate(req.params.id, req.body, (err, order) => {
+        if (err) return next(err);
+        if (!order) return res.status(404).send('No truck with that id');
+        
+        res.status(200).json({
+            message: 'We have updated your truck'
         });
     });
 };
@@ -241,12 +262,6 @@ exports.getOrderHistory = (req, res, next) => {
 
 //TODO make a function that creats an admin. should be the exact same as the one that makes users except also adds an admin field.
 exports.makeTruck = (req,res,next) => {
-    
-
-    
-    
-    
-    
     var newTruck = new Truck(req.body);
     newTruck.save((err, user) => {
         if (err) {
@@ -257,12 +272,20 @@ exports.makeTruck = (req,res,next) => {
         }
         return res.sendStatus(200);
     });
-    
-    
-    
 };
 
 //TODO make a fucntion that updaetes the admin value for a specific user.
 exports.removeAdminPrivs = (req, res, next) => {
 
+};
+
+exports.deleteTruck = (req, res, next) => {
+    if (req.params.id !== req.user.id && !req.user.isAdmin)
+        return res.status(403).send("You don't have permission to do that");
+    Truck.findByIdAndRemove(req.params.id, (err) => {
+        if (err) return next(err);
+        res.status(200).json({
+            message: 'Deleted the truck'
+        });
+    });
 };

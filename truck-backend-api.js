@@ -75,23 +75,25 @@ router.route('/admins/:id')
 
 
 router.route('/trucks')
-	.get(users.getActiveTrucks)
-	.post(auth.superAdminRequired, users.makeTruck);
-router.route('/trucks/:truckId')
-	.get(admins.getMenuItems);
-router.route('/trucks/history/:truckId')
+	.get(auth.adminRequired, users.getActiveTrucks)
+	.post(auth.adminRequired, users.makeTruck);
+router.route('/trucks/:id')
+	.put(auth.adminRequired, users.editTruck)
+	.get(auth.adminRequired, users.getTruck)
+	.delete(auth.adminRequired, users.deleteTruck);
+router.route('/trucks/history/:id')
 	.get(auth.adminRequired, admins.getOrderHistory);
-router.route('/trucks/pending/:truckId')
+router.route('/trucks/pending/:id')
 	.get(auth.adminRequired, admins.getPendingOrders);
-router.route('/trucks/orders/:orderId')
+router.route('/trucks/orders/:id')
 	.put(auth.adminRequired, admins.markOrderComplete);
 
 
-router.route('/items/:truckId/:itemId')
-	.get(auth.adminRequired,admins.getMenuItem)
-	.post(auth.adminRequired, admins.createItem)
-	.put(auth.adminRequired, admins.updateItem)
-	.delete(auth.adminRequired, admins.deleteItem);
+// router.route('/items/:truckId/:id')
+// 	.get(auth.adminRequired,admins.getMenuItem)
+// 	.post(auth.adminRequired, admins.createItem)
+// 	.put(auth.adminRequired, admins.updateItem)
+// 	.delete(auth.adminRequired, admins.deleteItem);
 
 // router.route('/items/:id')
 // 	.get(items.getItemById)
