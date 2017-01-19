@@ -6,12 +6,12 @@ const validator = require('email-validator');
 var userSchema = new Schema({
 	firstName: {type: String, required: true, trim: true},
 	lastName: {type: String, trim: true},
-	hash: {type: String, required: true},
+	password: {type: String, required: true},
 	venmo: {type: String, unique: true, required: true},
 	email: {type: String, required: true, trim: true, unique: true},
 	phone: {type: String, required: true, unique: true, sparse: true},
 	phoneProvider: {type: String, required: true},
-	isAdmin: {type: Schema.ObjectId, ref: 'Truck'},
+	isAdmin: Boolean, // {type: Schema.ObjectId, ref: 'Truck'}
 	isSuperAdmin: Boolean,
 	token: String
 	},
@@ -28,10 +28,10 @@ var userSchema = new Schema({
 userSchema.pre('save', function (callback) {
 	if (!this.email)
         return callback(new Error('Missing email'));
-    if (!this.hash)
+    if (!this.password)
         return callback(new Error('Missing password'));
-    if (this.isModified('hash'))
-        this.hash = bcrypt.hashSync(this.hash);
+    if (this.isModified('password'))
+        this.password = bcrypt.hashSync(this.password);
 
     if (!this.phone)
         return callback(new Error('Missing phone'));
@@ -60,14 +60,15 @@ userSchema.pre('save', function (callback) {
 
 // methods for validating password
 userSchema.methods.comparePassword = function(pw, callback) {
-    //console.log(pw + " " + this.hash);
-    bcrypt.compare(pw, this.hash, (err, isMatch) => {
+    //console.log(pw + " " + this.password);
+    bcrypt.compare(pw, this.password, (err, isMatch) => {
         if (err) return callback(err);
         callback(null, isMatch);
     });
 };
+
 userSchema.methods.comparePasswordSync = function(pw) {
-    return bcrypt.compareSync(pw, this.hash);
+    return bcrypt.compareSync(pw, this.password);
 };
 
 

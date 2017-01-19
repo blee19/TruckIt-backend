@@ -12,13 +12,12 @@ var truckSchema = new Schema({
 		isActive: Boolean,
 		isSoftDeleted: Boolean,
 		menu: [{
-			item: {
-				price: Number,
-				name: String,
-				img: String,
-				inStock: Boolean,
-				ordersPlaced: Number
-			}
+			price: Number,
+			name: String,
+			img: String,
+			inStock: Boolean,
+			ordersPlaced: Number
+			
 		}],
 	},
 	{

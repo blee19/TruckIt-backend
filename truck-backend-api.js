@@ -18,9 +18,11 @@ mongoose.connect(config.dbUrl, {server: {socketOptions: {keepAlive: 120}}});
 var app = express();
 var router = express.Router();
 
-if (app.get('env') !== 'production') app.use(logger('dev'));
-// run init scripts
-else require('./init/init');
+if (app.get('env') === 'production') {
+	app.use(logger('dev'));
+} else {
+	require('./init/init');
+}
 
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(bodyParser.json());
@@ -48,7 +50,7 @@ router.param('subId', (req, res, next, id) => {
 // ==================================================
 
 router.route('/users')
-	.get(users.getAllUsers)
+	.get(auth.superAdminRequired, users.getAllUsers)
 	.post(users.createUser);
 // router.route('/users/pending')
 // 	.get(auth.adminRequired, users.getUndeliveredAndUnpaidPurchases);
@@ -61,7 +63,7 @@ router.route('/users/pending/:id')
 	.get(auth.adminRequired, users.getPendingOrders);
 
 router.route('/users/cart/:id')
-	.get(auth.adminRequired, users.getCart)
+//	.get(auth.adminRequired, users.getCart)
 	.post(auth.adminRequired, users.placeOrder);
 router.route('/users/history/:id')
 	.get(auth.adminRequired, users.getOrderHistory);
@@ -71,24 +73,27 @@ router.route('/admins/:id')
 	.post(auth.superAdminRequired, users.makeAdmin)
 	.delete(auth.superAdminRequired, users.removeAdminPrivs);
 
-router.route('/trucks')
-	.get(users.getActiveTrucks);
 
-router.route('/trucks/:truckId')
-	.get(admins.getMenuItems);
-router.route('/trucks/history/:truckId')
+router.route('/trucks')
+	.get(auth.adminRequired, users.getActiveTrucks)
+	.post(auth.adminRequired, users.makeTruck);
+router.route('/trucks/:id')
+	.put(auth.adminRequired, users.editTruck)
+	.get(auth.adminRequired, users.getTruck)
+	.delete(auth.adminRequired, users.deleteTruck);
+router.route('/trucks/history/:id')
 	.get(auth.adminRequired, admins.getOrderHistory);
-router.route('/trucks/pending/:truckId')
+router.route('/trucks/pending/:id')
 	.get(auth.adminRequired, admins.getPendingOrders);
-router.route('/trucks/orders/:orderId')
+router.route('/trucks/orders/:id')
 	.put(auth.adminRequired, admins.markOrderComplete);
 
 
-router.route('/items/:truckId/:itemId')
-	.get(auth.adminRequired,admins.getMenuItem)
-	.post(auth.adminRequired, admins.createItem)
-	.put(auth.adminRequired, admins.updateItem)
-	.delete(auth.adminRequired, admins.deleteItem);
+// router.route('/items/:truckId/:id')
+// 	.get(auth.adminRequired,admins.getMenuItem)
+// 	.post(auth.adminRequired, admins.createItem)
+// 	.put(auth.adminRequired, admins.updateItem)
+// 	.delete(auth.adminRequired, admins.deleteItem);
 
 // router.route('/items/:id')
 // 	.get(items.getItemById)
@@ -97,7 +102,7 @@ router.route('/items/:truckId/:itemId')
 // 	.delete(auth.adminRequired, items.deleteItem);
 //
 router.route('/auth/token')
-	.post(auth.loginUser);
+ 	.post(auth.loginUser);
 
 app.use('/', router);
 
