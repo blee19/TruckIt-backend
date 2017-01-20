@@ -4,6 +4,7 @@ const config = require('../models/config');
 
 
 const jwt_parameters = ['email', 'isVerified', 'isAdmin'];
+const jwt_optional = ['firstName', 'lastName', 'isSuperAdmin'];
 
 exports.loginUser = (req, res, next) => {
 	if (typeof req.body.email !== 'string')
@@ -21,11 +22,8 @@ exports.loginUser = (req, res, next) => {
 
 			var payload = { id: user._id };
 			jwt_parameters.forEach((s) => payload[s] = user[s]);
-			if (user.firstName) payload.firstName = user.firstName;
-			if (user.lastName) payload.lastName = user.lastName;
-			if (user.isSuperAdmin) payload.isSuperAdmin = user.isSuperAdmin;
-
-
+			jwt_optional.forEach((s) => payload[s] = user[s]);
+			
 			var token = jwt.encode(payload, config.secret);
 			user.token = token;
 			user.save((err) => {
@@ -72,6 +70,9 @@ function validateToken(req, res, next, isSuperAdminRequired, isAdminRequired) {
 		if (!user) return res.status(403).send('Invalid token user ID');
 		var expired = false;
 		jwt_parameters.forEach((s) => {
+			if (decoded[s] !== user[s]) expired = true
+		});
+		jwt_optional.forEach((s) => {
 			if (decoded[s] !== user[s]) expired = true
 		});
 		if (expired || token !== user.token)

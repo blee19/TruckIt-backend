@@ -17,13 +17,11 @@ mongoose.connect(config.dbUrl, {server: {socketOptions: {keepAlive: 120}}});
 var app = express();
 var router = express.Router();
 
-if (app.get('env') === 'production') {
-	app.use(logger('dev'));
-} else {
-	require('./init/init');
-}
+if (app.get('env') !== 'production') app.use(logger('dev'));
 
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+// run init script
+require('./init/init');
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -35,12 +33,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 router.param('id', (req, res, next, id) => {
 	if (!id.match(/^[0-9a-fA-F]{24}$/))
 		return res.status(400).send('Invalid ID');
-	next();
-});
-
-router.param('subId', (req, res, next, id) => {
-	if (!id.match(/^[0-9a-fA-F]{24}$/))
-		return res.status(400).send('Invalid second ID');
 	next();
 });
 
@@ -61,9 +53,17 @@ router.route('/users/:id')
 // router.route('/users/pending/:id')
 // 	.get(auth.adminRequired, users.getPendingOrders);
 
-router.route('/users/cart/:id')
-//	.get(auth.adminRequired, users.getCart)
-	.post(auth.adminRequired, users.placeOrder);
+router.route('/orders')
+	.get(auth.adminRequired, users.getPaidOrders)
+	.post(auth.validateToken, users.placeOrder);
+
+//TODO THESE ARE NOT DONE YET....
+router.route('/users/cart')
+	.get(auth.validateToken, users.getCart);
+
+// router.route('/users/cart/:id')
+// 	.get(auth.adminRequired, users.getACart)
+// 	.post(auth.adminRequired, users.placeOrder);
 router.route('/users/history/:id')
 	.get(auth.adminRequired, users.getOrderHistory);
 
@@ -80,6 +80,9 @@ router.route('/trucks/:id')
 	.put(auth.adminRequired, users.editTruck)
 	.get(users.getTruck)
 	.delete(auth.adminRequired, users.deleteTruck);
+
+
+// TODO these do not work... yet
 router.route('/trucks/history/:id')
 	.get(auth.adminRequired, admins.getOrderHistory);
 router.route('/trucks/pending/:id')
@@ -128,7 +131,7 @@ app.use((err, req, res, next) => {
 	var status = err.status || 500;
 	if (status >= 400 && status < 500 && err.message)
 		var message = err.message;
-	else var message = ''
+	else var message = '';
 	res.status(status).send(message);
 });
 
