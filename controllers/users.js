@@ -204,7 +204,7 @@ exports.placeOrder = (req, res, next) => {
     var orderData = {
         user: req.user.id,
         truck: req.body.truck, // TODO THIS SHOULD BE FROM THE FORM
-        purchasedItems: req.body.items, // TODO EACH ITEM SHOULD HAVE NAME PRICE AND QUANTITY
+        purchasedItems: req.body.purchasedItems, // TODO EACH ITEM SHOULD HAVE NAME PRICE AND QUANTITY
         completed: new Date()
     };
     
