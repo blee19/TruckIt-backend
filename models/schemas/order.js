@@ -5,13 +5,13 @@ var orderSchema = new Schema({
 
 	user: {type: Schema.ObjectId, required: true, trim: true},
 	truck: {type: Schema.ObjectId, required: true},
-	purchasedItems: [{
-		item: {
+	purchasedItems: [
+		{
 			price: Number,
 			name: {type: String, required: true},
 			quantity: Number
 		}
-	}],
+	],
 	paid: Date,
 	completed: Date,
 	totalPrice: {type: Number, required: true}
