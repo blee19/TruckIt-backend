@@ -4,6 +4,17 @@ const User = require('../models/schemas/user');
 const validator = require('email-validator');
 const Truck = require('../models/schemas/truck');
 const Order = require('../models/schemas/order');
+const config = require('../models/config');
+const nodemailer = require('nodemailer');
+
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: config.emailFromAddress,
+        pass: config.emailPassword
+    }
+});
+
 
 exports.getAllUsers = (req, res, next) => {
     User.find({}, (err, users) => {
@@ -123,10 +134,10 @@ exports.removeAdminPrivs = (req, res, next) => {
 };
 
 // //TODO fix so that it gets a users pending orders from Orders DB
-exports.getPaidOrders = (req, res, next) => {
-    Order.find({ paid: { $exists: true } }, (err, orders) => {
+exports.getAllOrders = (req, res, next) => {
+    Order.find({}, (err, orders) => {
         if (err) return next(err);
-        res.json(orders);
+        res.send(orders);
     });
 };
 
@@ -188,24 +199,33 @@ exports.getACart = (req, res, next) => {
 };
 
 //TODO allows users to place orders
-exports.placeOrder = (req,res, next) => {
+exports.placeOrder = (req, res, next) => {
 
     if (!req.user.id) return res.status(403).send('Account required');
     
     if (req.params.id !== req.user.id && !req.user.isAdmin)
         return res.status(403).send("You don't have permission to do that");
     
-    var newOrder = new Order(req.body);
-    var orderPromise = newOrder.save()
-    OrderPromise.then((user) => {
+    var orderData = {
+        user: req.user.id,
+        truck: req.body.truck, // TODO THIS SHOULD BE FROM THE FORM
+        purchasedItems: req.body.items, // TODO EACH ITEM SHOULD HAVE NAME PRICE AND QUANTITY
+        completed: new Date()
+    };
     
-        var client = twilio(config.twilio_sid, config.twilio_token);
+    console.log('orderData:', orderData);
     
-        client.sendMessage({
-            to: '+17203831855',
-            from: '+17209612656',
-            body: 'thanks for purchasing an item'
-        });
+    var newOrder = new Order(orderData);
+    var orderPromise = newOrder.save();
+    orderPromise.then((order) => {
+    
+        var mailConfig = {
+            from: `"${config.emailFromName}" <${config.emailFromAddress}>`,
+            to: user.email,
+            subject: 'HSA Dorm Supplies Confirmation',
+            text: `Thank you for purchasing ${req.body.items}. Please venmo $${req.body.totalPrice} to ${config.venmoAccount}.`
+        };
+        transporter.sendMail(mailConfig);
     })
     .then(() => {
         res.sendStatus(200)
@@ -213,8 +233,12 @@ exports.placeOrder = (req,res, next) => {
 };
 
 //TODO gets users purchase history
-exports.getOrderHistory = (req, res, next) => {
-
+exports.getUserOrderHistory = (req, res, next) => {
+    Order.find({user: req.params.id}, (err, orders) => {
+        if (err) return next(err);
+        res.send(orders);
+    });
+    
 };
 
 //TODO make a function that creats an admin. should be the exact same as the one that makes users except also adds an admin field.

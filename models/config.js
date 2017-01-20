@@ -16,6 +16,8 @@ module.exports = {
 
 	// for sending emails
 	// TODO change this email
-	twilio_sid: 'AC923bf1467fd06bb3e697565829b25363',
-	twilio_token: 'abba490de3f1e6f77854fb2ad7c1f6d8'
+	emailFromName: "TruckIt TruckIt",
+	emailFromAddress: 'harvardTruckIt@gmail.com',
+	emailPassword: 'HarvardTrucksRock',
+	venmoAccount: '@venmoAccountGoesHere',
 };

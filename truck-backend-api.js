@@ -52,8 +52,11 @@ router.route('/users/:id')
 
 
 router.route('/orders')
-	.get(auth.adminRequired, users.getPaidOrders)
+	.get(auth.adminRequired, users.getAllOrders)
 	.post(auth.validateToken, users.placeOrder);
+
+router.route('/orders/:id')
+	.get(auth.validateToken, users.getUserOrderHistory);
 
 //TODO THESE ARE NOT DONE YET....
 router.route('/users/cart')
@@ -61,9 +64,9 @@ router.route('/users/cart')
 
 // router.route('/users/cart/:id')
 // 	.get(auth.adminRequired, users.getACart)
-// 	.post(auth.adminRequired, users.placeOrder);
-router.route('/users/history/:id')
-	.get(auth.adminRequired, users.getOrderHistory);
+
+// router.route('/users/history/:id')
+// 	.get(auth.adminRequired, users.getOrderHistory);
 
 
 router.route('/admins/:id')

@@ -8,12 +8,13 @@ var orderSchema = new Schema({
 	purchasedItems: [{
 		item: {
 			price: Number,
-			name: String,
+			name: {type: String, required: true},
 			quantity: Number
 		}
 	}],
 	paid: Date,
 	completed: Date,
+	totalPrice: {type: Number, required: true}
 	},
 
 	{
