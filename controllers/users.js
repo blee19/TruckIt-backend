@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const twilio = require('twilio');
 const User = require('../models/schemas/user');
 const validator = require('email-validator');
 const Truck = require('../models/schemas/truck');
@@ -145,13 +144,12 @@ exports.getAllOrders = (req, res, next) => {
 exports.getActiveTrucks = (req, res, next) => {
     Truck.find({ isActive: true }, (err, trucks) => {
         if (err) return next(err);
+        console.log("trucks searched");
         res.json(trucks);
     });
 };
 
 exports.getTruck = (req, res, next) => {
-    if (req.params.id !== req.user.id && !req.user.isAdmin)
-        return res.status(403).send("You don't have permission to do that");
     Truck.findById(req.params.id, (err, truck) => {
         if (err) return next(err);
         if (!truck) return res.status(404).send('No user with that ID');

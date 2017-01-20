@@ -50,6 +50,8 @@ router.route('/users/:id')
 	.put(auth.validateToken, users.updateUser)
 	.delete(auth.validateToken, users.deleteUser);
 
+// router.route('/users/pending/:id')
+// 	.get(auth.adminRequired, users.getPendingOrders);
 
 router.route('/orders')
 	.get(auth.adminRequired, users.getAllOrders)
@@ -79,7 +81,7 @@ router.route('/trucks')
 	.post(auth.adminRequired, users.makeTruck);
 router.route('/trucks/:id')
 	.put(auth.adminRequired, users.editTruck)
-	.get(auth.adminRequired, users.getTruck)
+	.get(users.getTruck)
 	.delete(auth.adminRequired, users.deleteTruck);
 
 
