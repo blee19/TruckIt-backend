@@ -88,7 +88,7 @@ exports.createUser = (req, res, next) => {
                 return res.status(400).send('Email, phone, or venmo account number already registered');
             return next(err);
         }
-        return res.sendStatus(200);
+        return next();
     });
 };
 

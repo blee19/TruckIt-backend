@@ -42,7 +42,7 @@ router.param('id', (req, res, next, id) => {
 
 router.route('/users')
 	.get(auth.superAdminRequired, users.getAllUsers)
-	.post(users.createUser);
+	.post(users.createUser, auth.loginUser);
 // router.route('/users/pending')
 // 	.get(auth.adminRequired, users.getUndeliveredAndUnpaidPurchases);
 router.route('/users/:id')
