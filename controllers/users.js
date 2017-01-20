@@ -200,10 +200,7 @@ exports.getACart = (req, res, next) => {
 exports.placeOrder = (req, res, next) => {
 
     if (!req.user.id) return res.status(403).send('Account required');
-    
-    if (!req.user.id)
-        return res.status(403).send("You don't have permission to do that");
-    
+        
     var orderData = {
         user: req.user.id,
         truck: req.body.truck, // TODO THIS SHOULD BE FROM THE FORM
