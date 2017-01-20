@@ -74,11 +74,11 @@ router.route('/admins/:id')
 
 
 router.route('/trucks')
-	.get(auth.adminRequired, users.getActiveTrucks)
+	.get(users.getActiveTrucks)
 	.post(auth.adminRequired, users.makeTruck);
 router.route('/trucks/:id')
 	.put(auth.adminRequired, users.editTruck)
-	.get(auth.adminRequired, users.getTruck)
+	.get(users.getTruck)
 	.delete(auth.adminRequired, users.deleteTruck);
 router.route('/trucks/history/:id')
 	.get(auth.adminRequired, admins.getOrderHistory);
