@@ -201,7 +201,7 @@ exports.placeOrder = (req, res, next) => {
 
     if (!req.user.id) return res.status(403).send('Account required');
     
-    if (req.params.id !== req.user.id && !req.user.isAdmin)
+    if (req.user.id && !req.user.isAdmin)
         return res.status(403).send("You don't have permission to do that");
     
     var orderData = {
