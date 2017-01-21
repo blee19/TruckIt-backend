@@ -200,12 +200,16 @@ exports.getACart = (req, res, next) => {
 exports.placeOrder = (req, res, next) => {
 
     if (!req.user.id) return res.status(403).send('Account required');
-        
+    
+    console.log('req.body:', req.body);
+    
+    
     var orderData = {
         user: req.user.id,
         truck: req.body.truck, // TODO THIS SHOULD BE FROM THE FORM
         purchasedItems: req.body.purchasedItems, // TODO EACH ITEM SHOULD HAVE NAME PRICE AND QUANTITY
-        completed: new Date()
+        completed: new Date(),
+        totalPrice: +req.body.totalPrice
     };
     
     console.log('orderData:', orderData);
@@ -216,7 +220,7 @@ exports.placeOrder = (req, res, next) => {
     
         var mailConfig = {
             from: `"${config.emailFromName}" <${config.emailFromAddress}>`,
-            to: user.email,
+            to: req.user.email, // TODO ADD THE RIGHT EMAIL HERE
             subject: 'HSA Dorm Supplies Confirmation',
             text: `Thank you for purchasing ${req.body.items}. Please venmo $${req.body.totalPrice} to ${config.venmoAccount}.`
         };
